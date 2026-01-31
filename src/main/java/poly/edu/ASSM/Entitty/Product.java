@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 
 import lombok.Getter;
@@ -41,5 +42,7 @@ public class Product {
 	    @ManyToOne
 	    @JoinColumn(name = "CategoryId")
 	    private Category category;
-	    
+	    @Transient
+	    private int quantity = 1;
+
 }

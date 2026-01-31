@@ -1,5 +1,15 @@
 package poly.edu.ASSM.Services.util;
 
-public class AuthService {
+import poly.edu.ASSM.Entitty.Accounts;
 
+public interface AuthService {
+	Accounts login(String username, String password);
+
+    void logout();
+
+    Accounts getUser();
+
+    boolean isLogin();
+
+    boolean isAdmin();
 }
