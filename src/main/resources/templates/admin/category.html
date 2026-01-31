@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/Admin-content}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:replace="admin/category :: category"></div>
+
+<div class="category-container">
+
+    <h2>📂 Quản lý danh mục</h2>
+
+    <!-- FORM -->
+    <form class="category-form" th:action="@{/category/save}" method="post">
+        <input type="hidden" name="id" th:value="${category.id}">
+        
+        <label>Tên danh mục</label>
+        <input type="text" name="name" placeholder="Nhập tên danh mục"
+               th:value="${category.name}" required>
+
+        <button type="submit">💾 Lưu</button>
+        <a th:href="@{/category}" class="btn-reset">Làm mới</a>
+    </form>
+</div>
+</body>
+</html>

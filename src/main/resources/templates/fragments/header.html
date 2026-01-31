@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       >
+<head>
+<meta charset="UTF-8">
+<title>Header</title>
+</head>
+<body>
+
+<header th:fragment="header"class="play-header">
+ <div class="play-logo">
+        <span>▶</span>  Play sport
+    </div>
+
+    <!-- MENU -->
+    <nav class="play-menu">
+        <a th:href="@{/}" class="active">Trang chủ</a>
+        <a th:href="@{/product}">Sản phẩm</a>
+        <a th:href="@{/contact}">Liên hệ</a>
+        <a th:href="@{/login}">Đăng nhập</a>
+        <a th:href="@{/register}">Đăng ký</a>
+        <a th:href="@{/more}">Xem thêm</a>
+    </nav>
+
+    <!-- RIGHT -->
+    <div class="play-right">
+        <span class="icon">🔍</span>
+        <span class="icon">🔔</span>
+        <a th:href="@{/cart}" class="buy-btn">Cart</a>
+        <div class="avatar">😊</div>
+    </div>
+
+
+</header>
+</body>
+</html>

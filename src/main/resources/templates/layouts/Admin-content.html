@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Content</title>
+</head>
+<!-- CSS chung của cả trang-->
+<link rel="stylesheet" th:href="@{/css/home.css}">
+<link rel="stylesheet" th:href="@{/css/footer.css}">
+
+<body>
+
+    <!-- HEADER -->
+    <div th:replace="~{fragments/home :: home}"></div>
+
+    <!-- CONTENT -->
+    <main layout:fragment="main-content">
+        <!-- page con sẽ đổ vào đây -->
+    </main>
+
+    <!-- FOOTER -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

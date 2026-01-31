@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main-content}">
+<body>
+
+	<div layout:fragment="content">
+		<h2>SẢN PHẨM</h2>
+		<p>Giày chính hãng – phong cách hiện đại</p>
+
+		<div class="product-page">
+
+			<!-- DANH MỤC BÊN TRÁI -->
+			<aside class="product-category">
+				<h3>Danh mục</h3>
+				<a th:href="@{/product}" class="active">Tất cả</a> <a
+					th:href="@{/product?cat=nam}">Giày Nam</a> <a
+					th:href="@{/product?cat=nu}">Giày Nữ</a> <a
+					th:href="@{/product?cat=the-thao}">Giày Thể Thao</a> <a
+					th:href="@{/product?cat=sneaker}">Sneaker</a>
+			</aside>
+
+			<!-- SẢN PHẨM BÊN PHẢI -->
+			<section class="product-list">
+
+				<div class="product-item">
+					<div class="img">👟</div>
+					<h4>Sneaker Basic</h4>
+					<p>750.000đ</p>
+					<button>Thêm vào giỏ</button>
+				</div>
+			</section>
+
+		</div>
+	</div>
+
+</body>
+</html>
