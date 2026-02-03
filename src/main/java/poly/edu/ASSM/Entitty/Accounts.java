@@ -20,7 +20,7 @@ import lombok.Setter;
 public class Accounts {
 	    @Id
 	    @Column(length = 50)
-	    private String username; // PK (không auto)
+	     String username; 
 
 	    @Column(nullable = false)
 	    private String password;

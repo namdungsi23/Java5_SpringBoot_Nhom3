@@ -40,7 +40,7 @@ public class Product {
 	    private String description;
 
 	    @ManyToOne
-	    @JoinColumn(name = "CategoryId")
+	    @JoinColumn(name = "Category_Id")
 	    private Category category;
 	    @Transient
 	    private int quantity = 1;

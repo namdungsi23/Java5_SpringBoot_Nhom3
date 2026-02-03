@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-       >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Header</title>
-</head>
-<body>
+<title>Admin Header</title>
+
 <style>
 * {
     margin: 0;
@@ -32,7 +29,6 @@ body {
 .play-logo {
     font-size: 22px;
     font-weight: bold;
-    color: #000;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -57,7 +53,7 @@ body {
     position: relative;
 }
 
-/* ACTIVE */
+.play-menu a:hover,
 .play-menu a.active {
     color: #e60023;
     font-weight: bold;
@@ -73,11 +69,6 @@ body {
     background-color: #e60023;
 }
 
-/* HOVER */
-.play-menu a:hover {
-    color: #e60023;
-}
-
 /* RIGHT */
 .play-right {
     display: flex;
@@ -85,27 +76,6 @@ body {
     gap: 14px;
 }
 
-/* ICON */
-.play-right .icon {
-    font-size: 18px;
-    cursor: pointer;
-}
-
-/* CART BUTTON */
-.buy-btn {
-    text-decoration: none;
-    background-color: #e60023;
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 14px;
-}
-
-.buy-btn:hover {
-    opacity: 0.9;
-}
-
-/* AVATAR */
 .avatar {
     width: 34px;
     height: 34px;
@@ -117,29 +87,30 @@ body {
     cursor: pointer;
 }
 </style>
-<header th:fragment="home"class="play-header">
- <div class="play-logo">
-        <span>▶</span>  Play sport
+</head>
+
+<body>
+
+<header th:fragment="adminHeader" class="play-header">
+
+    <div class="play-logo">
+        <span>▶</span> Admin Panel
     </div>
 
-    <!-- MENU -->
+    <!-- MENU ADMIN -->
     <nav class="play-menu">
-        <a th:href="@{/home}" class="active">Trang chủ</a>
-        <a th:href="@{/managerproduct}"> Manage Product</a>
-        <a th:href="@{/category}">Manage Category</a>
-        <a th:href="@{/dashbroad}">Manage Dashbroad</a>
-        <a th:href="@{/user}">Manager User</a>
-        
+        <a th:href="@{/admin/dashbroad}">Dashboard</a>
+        <a th:href="@{/admin/product}">Products</a>
+        <a th:href="@{/admin/category}">Categories</a>
+        <a th:href="@{/admin/user}">Users</a>
     </nav>
 
     <!-- RIGHT -->
     <div class="play-right">
-        <span class="icon">🔍</span>
-        <span class="icon">🔔</span>
         <div class="avatar">😊</div>
     </div>
 
-
 </header>
+
 </body>
 </html>

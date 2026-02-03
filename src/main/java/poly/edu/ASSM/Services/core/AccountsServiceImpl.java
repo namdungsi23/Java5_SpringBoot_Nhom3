@@ -3,6 +3,8 @@ package poly.edu.ASSM.Services.core;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import poly.edu.ASSM.Entitty.Accounts;
@@ -64,6 +66,16 @@ public class AccountsServiceImpl implements AccountService {
 	        }
 	        return null;
 	    }
+
+	@Override
+	public Page<Accounts> search(String keyword, int page, int size) {
+		return repo.search(keyword, PageRequest.of(page, size));
+	}
+
+	@Override
+	public Page<Accounts> findAll(int page, int size) {
+		return repo.findAll(PageRequest.of(page, size));
+	}
 	}
 
 

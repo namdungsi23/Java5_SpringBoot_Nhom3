@@ -10,13 +10,15 @@ body {
 
 /* HEADER */
 .play-header {
+    height: 70px;              /* 👈 FIX CỨNG */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
+    padding: 0 24px;           /* 👈 bỏ padding dọc */
     background-color: #ffffff;
     border-bottom: 1px solid #e5e5e5;
 }
+
 
 /* LOGO */
 .play-logo {

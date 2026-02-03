@@ -5,21 +5,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
-@RequestMapping("/home")
-public String home() {
-	return "fragments/home";
+
+    // TRANG MẶC ĐỊNH
+    @GetMapping("")
+    public String adminHome() {
+        return "redirect:/admin/dashbroad";
+    }
+
+    @GetMapping("/dashbroad")
+    public String dashbroad() {
+        return "admin/dashbroad";
+    }
+
+ 
+    public String category() {
+        return "admin/category";
+    }
+
+    @GetMapping("/product")
+    public String product() {
+        return "admin/product";
+    }
+    public String user() {
+        return "admin/user";
+    }
 }
-@GetMapping("/category")
-public String category() {
-	return "admin/category";
-}
-@GetMapping("/dashbroad")
-public String dashbroad() {
-	return "admin/dashbroad";
-}
-@GetMapping("/managerproduct")
-public String product() {
-	return "admin/product";
-}
-}
+
+
