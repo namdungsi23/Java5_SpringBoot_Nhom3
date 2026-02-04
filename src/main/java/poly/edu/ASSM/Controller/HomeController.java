@@ -19,10 +19,7 @@ public class HomeController {
 	public String more(){
 		return "page/more";
 	}
-	@GetMapping("/product")
-	public String product(){
-		return "page/product";
-	}
+
 	@GetMapping("/cart")
 	public String cart(){
 		return "page/cart";

@@ -27,7 +27,7 @@ import lombok.Setter;
 public class Product {
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private int id;
+	    private Integer id;
 
 	    private String name;
 	    private String image;
@@ -40,7 +40,7 @@ public class Product {
 	    private String description;
 
 	    @ManyToOne
-	    @JoinColumn(name = "Category_Id")
+	    @JoinColumn(name = "CategoryId", referencedColumnName="Id")
 	    private Category category;
 	    @Transient
 	    private int quantity = 1;

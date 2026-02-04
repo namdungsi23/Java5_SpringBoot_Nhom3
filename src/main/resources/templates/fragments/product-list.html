@@ -1,0 +1,29 @@
+<div th:fragment="productList">
+	
+	<div class="product-grid">
+		<div class="product-item" th:each="p : ${products.content}">
+			 <img th:src="${p.image}" width="150" alt="Ảnh sản phẩm"/>
+			  <h4 th:text="${p.name}"></h4>
+			   <p th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')} + 'đ'"></p>
+		</div>
+	</div>
+	
+	<!-- PAGINATION -->
+	<div class="pagination" th:if="${products.totalPages > 1}">
+		<a href="#" th:if="${!products.first}" onclick="loadPage(0)">First</a>
+		<a href="#" th:if="${products.hasPrevious()}" th:onclick="'loadPage(' +${products.number - 1} + '')">Previous</a>
+		
+		<!-- Page number -->
+		<span th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}">
+			<a href="#" 
+				th:text="${i + 1}"
+				th:classappend="${i == products.number} ? 'active' : '' "
+				th:onclick="|loadPage(${i})|">
+			</a>
+		</span>
+		
+		<a href="#" th:if="${products.hasNext()}" th:onclick="|loadPage(${products.number + 1})|">Next</a>
+		<a href="#" th:if="${!products.last}" th:onclick="|loadPage(${products.totalPages - 1})|">Last</a>
+	</div>
+
+</div>

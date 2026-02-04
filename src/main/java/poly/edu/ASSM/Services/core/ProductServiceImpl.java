@@ -16,8 +16,8 @@ import poly.edu.ASSM.Repository.ProductRepository;
 public class ProductServiceImpl implements ProductService{
 
 	  @Autowired
-	    ProductRepository repo;
-
+	   ProductRepository repo;
+	  
 	    // ===== CRUD cơ bản =====
 	    @Override
 	    public List<Product> findAll() {
@@ -61,6 +61,11 @@ public class ProductServiceImpl implements ProductService{
         // Không keyword → lấy tất cả
         return repo.findAll(pageable);
     }
+
+		@Override
+		public Page<Product> filterProducts(String cat, String keyword, Double min, Double max, Pageable pageable) {
+			return repo.filterProducts(cat, keyword, min, max, pageable);
+		}
 	}
 
 

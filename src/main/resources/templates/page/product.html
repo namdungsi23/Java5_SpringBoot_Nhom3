@@ -13,26 +13,68 @@
 			<!-- DANH MỤC BÊN TRÁI -->
 			<aside class="product-category">
 				<h3>Danh mục</h3>
-				<a th:href="@{/product}" class="active">Tất cả</a> <a
-					th:href="@{/product?cat=nam}">Giày Nam</a> <a
-					th:href="@{/product?cat=nu}">Giày Nữ</a> <a
-					th:href="@{/product?cat=the-thao}">Giày Thể Thao</a> <a
-					th:href="@{/product?cat=sneaker}">Sneaker</a>
+				<a th:href="@{/product}" class="active">Tất cả</a> 
+				<th:block th:each="cat : ${categories}">
+					<a th:href="@{/product(cat=${cat.name},
+									        keyword=${keyword},
+									        min=${min},
+									        max=${max},
+									        sort=${sort},
+									        dir=${dir})}" th:text="${cat.name}"></a>
+				</th:block>
 			</aside>
 
 			<!-- SẢN PHẨM BÊN PHẢI -->
 			<section class="product-list">
-
-				<div class="product-item">
-					<div class="img">👟</div>
-					<h4>Sneaker Basic</h4>
-					<p>750.000đ</p>
-					<button>Thêm vào giỏ</button>
-				</div>
+				<!-- FILTER -->
+	            <form th:action="@{/product}" method="get">
+	                <input type="hidden" name="cat" th:value="${cat}"/>
+	
+	                <input type="text" name="keyword"
+	                       placeholder="Tìm sản phẩm"
+	                       th:value="${keyword}"/>
+	
+	                <input type="number" name="min"
+	                       placeholder="Giá từ"
+	                       th:value="${min}"/>
+	
+	                <input type="number" name="max"
+	                       placeholder="Giá đến"
+	                       th:value="${max}"/>
+	
+	                <button>Lọc</button>
+	            </form>
+	            
+	            <!-- SORT -->
+	            <div>
+	                <a th:href="@{/product(
+	                        cat=${cat},
+	                        keyword=${keyword},
+	                        min=${min},
+	                        max=${max},
+	                        sort='price',
+	                        dir='asc'
+	                )}">Giá ↑</a>
+	
+	                <a th:href="@{/product(
+	                        cat=${cat},
+	                        keyword=${keyword},
+	                        min=${min},
+	                        max=${max},
+	                        sort='price',
+	                        dir='desc'
+	                )}">Giá ↓</a>
+	            </div>
+            
+				 <!-- AJAX CONTAINER -->
+	            <div id="product-container"
+	                 th:insert="~{fragments/product-list :: productList}">
+	            </div>
 			</section>
 
 		</div>
 	</div>
+
 
 </body>
 </html>
