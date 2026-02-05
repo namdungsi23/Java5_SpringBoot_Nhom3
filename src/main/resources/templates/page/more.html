@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -6,9 +5,70 @@
 <body>
 
 <div layout:fragment="content">
-   <h2>Thông tin thêm</h2>
-    <p>Chúng tôi chuyên cung cấp giày chính hãng.</p>
-    <p>Cam kết chất lượng – đổi trả trong 7 ngày.</p>
+
+    <!-- TITLE -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Thông tin thêm</h2>
+        <p class="text-muted">Những điều bạn nên biết về Shoe Store</p>
+    </div>
+
+    <!-- INTRO -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <p>
+                Chúng tôi chuyên cung cấp <strong>giày chính hãng 100%</strong> đến từ các thương hiệu
+                nổi tiếng trong và ngoài nước.
+            </p>
+            <p class="mb-0">
+                Với phương châm <strong>“Uy tín – Chất lượng – Khách hàng là trung tâm”</strong>,
+                chúng tôi luôn nỗ lực mang đến trải nghiệm mua sắm tốt nhất.
+            </p>
+        </div>
+    </div>
+
+    <!-- HIGHLIGHTS -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">✔ Chính hãng</h5>
+                    <p class="card-text">
+                        Cam kết nguồn gốc rõ ràng, hoàn tiền 200% nếu phát hiện hàng giả.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">🔄 Đổi trả dễ dàng</h5>
+                    <p class="card-text">
+                        Hỗ trợ đổi trả trong vòng <strong>7 ngày</strong> nếu sản phẩm lỗi hoặc không vừa size.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">🚚 Giao hàng nhanh</h5>
+                    <p class="card-text">
+                        Giao hàng toàn quốc, kiểm tra sản phẩm trước khi thanh toán.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="alert alert-info">
+        📞 Mọi thắc mắc vui lòng liên hệ Hotline:
+        <strong>0909 999 999</strong> hoặc Email:
+        <strong>support@shoestore.vn</strong>
+    </div>
+
 </div>
 
 </body>
