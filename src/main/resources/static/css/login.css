@@ -45,6 +45,10 @@
     font-size: 14px;
 }
 
+.auth-box input[type="checkbox"] {
+	width:10%;
+}
+
 .auth-box input:focus {
     outline: none;
     border-color: #6a5acd;

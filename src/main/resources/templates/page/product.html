@@ -71,10 +71,22 @@
 	                 th:insert="~{fragments/product-list :: productList}">
 	            </div>
 			</section>
-
+			
 		</div>
+		
+		<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body text-centered">
+						<p th:text="${message}"></p>
+						<button class="btn btn-primary" onclick="window.location.href='#'">Đăng nhập</button>
+						<button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</div>
-
 
 </body>
 </html>

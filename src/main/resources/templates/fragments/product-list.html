@@ -5,6 +5,15 @@
 			 <img th:src="${p.image}" width="150" alt="Ảnh sản phẩm"/>
 			  <h4 th:text="${p.name}"></h4>
 			   <p th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')} + 'đ'"></p>
+			   <!-- <div class="add-to-cart">
+					<a href="@{/cart/add(id=${p.id})}">Thêm vào giỏ hàng</a>
+				</div> -->
+				<div class="add-to-cart">
+					<form th:action="@{/cart/add}" method="post">
+						<input type="hidden" name="id" th:value="${p.id}">
+						<button type="submit">Thêm vào giỏ hàng</button>
+					</form>
+				</div>
 		</div>
 	</div>
 	
