@@ -43,13 +43,29 @@ public class AdminUserController {
         return "admin/user";
     }
 
-    // EDIT
-    @GetMapping("/edit/{username}")
-    public String edit(@PathVariable String username, Model model) {
-        model.addAttribute("user", accSer.findByUsername(username));
-        model.addAttribute("users", accSer.findAll());
-        return "admin/user";
-    }
+ @GetMapping("/admin/user/edit/{username}")
+ public String edit(
+         @PathVariable String username,
+         Model model,
+         @RequestParam(defaultValue = "") String keyword,
+         @RequestParam(defaultValue = "0") int page
+ ) {
+     int size = 5;
+
+     Page<Accounts> pages =
+             keyword.isEmpty()
+             ? accSer.findAll(page, size)
+             : accSer.search(keyword, page, size);
+
+     model.addAttribute("users", pages.getContent());
+     model.addAttribute("pages", pages);
+     model.addAttribute("keyword", keyword);
+
+     model.addAttribute("user", accSer.findByUsername(username));
+
+     return "admin/user";
+ }
+
 
     // SAVE
     @PostMapping("/save")
