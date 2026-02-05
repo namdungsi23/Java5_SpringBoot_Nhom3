@@ -11,12 +11,12 @@ public class AdminController {
     // TRANG MẶC ĐỊNH
     @GetMapping("")
     public String adminHome() {
-        return "redirect:/admin/dashbroad";
+        return "redirect:/admin/dashboard";
     }
 
-    @GetMapping("/dashbroad")
-    public String dashbroad() {
-        return "admin/dashbroad";
+ 
+    public String dashboard() {
+        return "admin/dashboard";
     }
 
  
@@ -24,7 +24,7 @@ public class AdminController {
         return "admin/category";
     }
 
-    @GetMapping("/product")
+   
     public String product() {
         return "admin/product";
     }

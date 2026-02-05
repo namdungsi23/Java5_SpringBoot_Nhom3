@@ -1,10 +1,127 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/Admin-content}">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Admin Product</title>
 </head>
-<body>
 
+<body>
+	<div layout:fragment="main-content">
+
+		<!-- ================= FORM ADD / EDIT ================= -->
+		<h4>➕ Thêm / ✏️ Sửa sản phẩm</h4>
+
+		<form th:action="@{/admin/product/save}" method="post"
+			th:object="${product}" class="border p-3 mb-4">
+
+			<input type="hidden" th:field="*{id}" />
+
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label>Tên sản phẩm</label> <input class="form-control"
+						th:field="*{name}">
+				</div>
+
+				<div class="col-md-3 mb-3">
+					<label>Giá</label> <input type="number" class="form-control"
+						th:field="*{price}">
+				</div>
+
+				<div class="col-md-3 mb-3">
+					<label>Danh mục</label> <select class="form-select"
+						th:field="*{category}">
+						<option value="">-- Chọn danh mục --</option>
+						<option th:each="c : ${categories}" th:value="${c.id}"
+							th:text="${c.name}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="mb-3">
+				<label>Hình ảnh</label> <input class="form-control"
+					th:field="*{image}">
+			</div>
+
+			<div class="mb-3">
+				<label>Mô tả</label>
+				<textarea class="form-control" th:field="*{description}"></textarea>
+			</div>
+
+			<div class="form-check mb-3">
+				<input class="form-check-input" type="checkbox"
+					th:field="*{available}"> <label class="form-check-label">Còn
+					hàng</label>
+			</div>
+
+			<button class="btn btn-primary">Lưu sản phẩm</button>
+			<a th:href="@{/admin/product}" class="btn btn-secondary">Reset</a>
+		</form>
+
+		<!-- ================= SEARCH / FILTER ================= -->
+		<form class="row mb-3" method="get" th:action="@{/admin/product}">
+			<div class="col-md-4">
+				<input name="keyword" class="form-control" th:value="${keyword}"
+					placeholder="Tìm sản phẩm">
+			</div>
+
+			<div class="col-md-3">
+				<select name="cat" class="form-select">
+					<option value="">-- Danh mục --</option>
+					<option th:each="c : ${categories}" th:value="${c.id}"
+						th:selected="${c.id == cat}" th:text="${c.name}"></option>
+				</select>
+			</div>
+
+			<div class="col-md-2">
+				<button class="btn btn-dark w-100">Tìm</button>
+			</div>
+		</form>
+
+		<!-- ================= TABLE ================= -->
+		<table class="table table-bordered text-center align-middle">
+			<thead class="table-dark">
+				<tr>
+					<th>ID</th>
+					<th>Tên</th>
+					<th>Giá</th>
+					<th>Danh mục</th>
+					<th>Ngày tạo</th>
+					<th>Trạng thái</th>
+					<th>Hành động</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="p : ${products}">
+					<td th:text="${p.id}"></td>
+					<td th:text="${p.name}"></td>
+					<td th:text="${p.price}"></td>
+					<td th:text="${p.category.name}"></td>
+					<td th:text="${p.createDate}"></td>
+					<td><span th:if="${p.available}" class="badge bg-success">Còn</span>
+						<span th:unless="${p.available}" class="badge bg-danger">Hết</span>
+					</td>
+					<td>
+					<a th:href="@{/admin/product(editId=${p.id})}"
+						class="btn btn-warning btn-sm">Sửa</a> 
+						<a th:href="@{/admin/product/delete/{id}(id=${p.id})}"
+						class="btn btn-danger btn-sm" onclick="return confirm('Xóa sản phẩm?')">Xóa</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- ================= PAGINATION ================= -->
+		<ul class="pagination justify-content-center">
+			<li class="page-item"
+				th:each="i : ${#numbers.sequence(0, pages.totalPages - 1)}"><a
+				class="page-link"
+				th:href="@{/admin/product(page=${i}, keyword=${keyword}, cat=${cat})}"
+				th:text="${i + 1}"> </a></li>
+		</ul>
+
+	</div>
 </body>
 </html>
