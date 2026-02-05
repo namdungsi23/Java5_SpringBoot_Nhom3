@@ -5,10 +5,86 @@
 <body>
 
 <div layout:fragment="content">
-    <h2>Liên hệ</h2>
-    <p>Email: support@shoestore.vn</p>
-    <p>Hotline: 0909 999 999</p>
-    <p>Địa chỉ: 123 Nguyễn Văn A, TP.HCM</p>
+
+    <!-- TITLE -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Liên hệ với chúng tôi</h2>
+        <p class="text-muted">Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- CONTACT INFO -->
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Thông tin liên hệ</h5>
+
+                    <p>
+                        📧 <strong>Email:</strong>
+                        <a href="mailto:support@shoestore.vn">support@shoestore.vn</a>
+                    </p>
+
+                    <p>
+                        📞 <strong>Hotline:</strong>
+                        <a href="tel:0909999999">0909 999 999</a>
+                    </p>
+
+                    <p>
+                        📍 <strong>Địa chỉ:</strong><br>
+                        123 Nguyễn Văn A, Quận 1, TP.HCM
+                    </p>
+
+                    <hr>
+
+                    <p class="mb-1">⏰ <strong>Giờ làm việc:</strong></p>
+                    <ul class="mb-0">
+                        <li>Thứ 2 – Thứ 6: 8:00 – 18:00</li>
+                        <li>Thứ 7: 8:00 – 12:00</li>
+                        <li>Chủ nhật: Nghỉ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT FORM -->
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Gửi tin nhắn cho chúng tôi</h5>
+
+                    <form th:action="@{/contact/send}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="tel" name="phone" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung</label>
+                            <textarea name="message" rows="4" class="form-control" required></textarea>
+                        </div>
+
+                        <button class="btn btn-primary px-4">
+                            Gửi liên hệ
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 </body>
