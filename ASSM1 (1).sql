@@ -1,5 +1,5 @@
-﻿create database Java5PlaySport
-use Java5PlaySport
+﻿create database Java5PlaySport1
+use Java5PlaySport1
 CREATE TABLE Categories (
     Id CHAR(4) PRIMARY KEY,
     Name NVARCHAR(50)
