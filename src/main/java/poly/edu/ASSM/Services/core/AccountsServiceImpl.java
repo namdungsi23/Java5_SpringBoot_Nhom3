@@ -76,6 +76,11 @@ public class AccountsServiceImpl implements AccountService {
 	public Page<Accounts> findAll(int page, int size) {
 		return repo.findAll(PageRequest.of(page, size));
 	}
+
+	@Override
+	public Accounts save(Accounts acc) {
+		return repo.save(acc);
+	}
 	}
 
 
