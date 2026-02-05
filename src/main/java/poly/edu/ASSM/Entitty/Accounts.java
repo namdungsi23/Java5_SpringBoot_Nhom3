@@ -26,6 +26,7 @@ public class Accounts {
 	    private String password;
 
 	    private String fullname;
+	    /*@Email*/
 	    private String email;
 	    private String photo;
 

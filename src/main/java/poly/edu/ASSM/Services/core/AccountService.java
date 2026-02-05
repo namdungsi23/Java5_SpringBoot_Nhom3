@@ -21,5 +21,5 @@ public interface AccountService {
 
     Accounts login(String username, String password);
     Page<Accounts> search(String keyword, int page, int size);
-
+ Accounts save(Accounts acc);
 }

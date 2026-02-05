@@ -28,40 +28,6 @@ public class ProductController {
 	@Autowired
 	CategoryServiceImpl catService;
 	
-	@GetMapping
-    public String products(
-            @RequestParam(required = false) String cat,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Double min,
-            @RequestParam(required = false) Double max,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "price") String sort,
-            @RequestParam(defaultValue = "asc") String dir,
-            Model model
-    ) {
-		Sort.Direction direction = 
-				dir.equalsIgnoreCase("asc")
-					? Sort.Direction.ASC
-				    : Sort.Direction.DESC;
-		
-		Pageable pageable = PageRequest.of(page, 10, Sort.by(direction, sort));
-		
-		Page<Product> products = productService.filterProducts(cat, keyword, min, max, pageable);
-		
-		List<Category> categories = catService.findAll();
-		
-		model.addAttribute("categories", categories);
-		model.addAttribute("products", products);
-        model.addAttribute("cat", cat);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("min", min);
-        model.addAttribute("max", max);
-        model.addAttribute("sort", sort);
-        model.addAttribute("dir", dir);
-
-        return "page/product";
-	}
-	
 	@GetMapping("/page")
     public String ajaxProducts(
             @RequestParam(required = false) String cat,

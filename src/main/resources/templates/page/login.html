@@ -1,14 +1,10 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main-content}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main-content}">
 <body>
 
-<div layout:fragment="content">
-    <div class="login-page">
-        <div class="auth-box">
-            <h2>Đăng nhập</h2>
+	<div th:fragment="loginForm">
 
             <form th:action="@{/login/validate}" method="post">
             	<div class="fw-semibold bg-danger text-white p-2 rounded" 
@@ -25,16 +21,16 @@
 	                <label for="chk" class="mt-3">Remember me</label>
                 </div>
 
-                <button type="submit">Đăng nhập</button>
-            </form>
+			<button class="btn btn-primary w-100 py-2 fw-semibold">Đăng
+				nhập</button>
 
-            <div class="auth-links">
-                <a href="#">Quên mật khẩu?</a>
-                <a href="#">Chưa có tài khoản? Đăng ký</a>
-            </div>
-        </div>
-    </div>
-</div>
+			<div class="text-center mt-3 small">
+				Chưa có tài khoản? <a href="#" onclick="showRegister()">Đăng ký</a>
+			</div>
+
+		</form>
+
+	</div>
 
 </body>
 </html>

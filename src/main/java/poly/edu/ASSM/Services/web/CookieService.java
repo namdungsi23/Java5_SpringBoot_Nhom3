@@ -17,6 +17,7 @@ public class CookieService {
 	 Cookie cookie = new Cookie(name,value);
 	 cookie.setMaxAge(days *24*60*60);
 	 cookie.setPath("/");
+	 resp.addCookie(cookie);
 	 return cookie;
  }
  public Cookie getCookie(String name) {

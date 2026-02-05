@@ -1,26 +1,51 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main-content}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/main-content}">
 <body>
 
-<div layout:fragment="content">
-  <h2>Đăng ký</h2>
+	<div th:fragment="registerForm">
 
-    <form>
-        <label>Họ tên</label><br>
-        <input type="text"><br><br>
+		<form th:action="@{/register}" method="post">
 
-        <label>Email</label><br>
-        <input type="email"><br><br>
+			<div class="form-floating mb-3">
+				<input type="text" name="username" class="form-control"
+					placeholder="Username" required> <label>Tên đăng
+					nhập</label>
+			</div>
 
-        <label>Mật khẩu</label><br>
-        <input type="password"><br><br>
+			<div class="form-floating mb-3">
+				<input type="email" name="email" class="form-control"
+					placeholder="Email" required> <label>Email</label>
+			</div>
 
-        <button type="submit">Đăng ký</button>
-    </form>
-</div>
+			<div class="form-floating mb-3">
+				<input type="password" name="password" class="form-control"
+					placeholder="Password" required> <label>Mật khẩu</label>
+			</div>
+
+			<div class="form-floating mb-3">
+				<input type="password" name="confirm" class="form-control"
+					placeholder="Confirm password" required> <label>Nhập
+					lại mật khẩu</label>
+			</div>
+
+			<div th:if="${error}" class="alert alert-danger text-center py-2">
+				[[${error}]]</div>
+
+			<div th:if="${success}" class="alert alert-success text-center py-2">
+				[[${success}]]</div>
+
+			<button class="btn btn-success w-100 py-2 fw-semibold">Đăng
+				ký</button>
+
+			<div class="text-center mt-3 small">
+				Đã có tài khoản? <a href="#" onclick="showLogin()">Đăng nhập</a>
+			</div>
+
+		</form>
+
+	</div>
 
 </body>
 </html>
