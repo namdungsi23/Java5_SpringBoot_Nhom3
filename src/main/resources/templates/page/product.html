@@ -69,18 +69,66 @@
 			
 		</div>
 		
-		<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+		<div class="modal fade" id="requiredLoginModal" tabindex="-1" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
-					<div class="modal-body text-centered">
-						<p th:text="${message}"></p>
-						<button class="btn btn-primary" onclick="window.location.href='#'">Đăng nhập</button>
+				<!-- MODAL HEADER -->
+		            <div class="modal-header">
+		                <h5 class="modal-title" th:text="${message}"></h5>
+		                <button type="button"
+		                        class="btn-close"
+		                        data-bs-dismiss="modal"
+		                        aria-label="Close">
+		                </button>
+		            </div>
+		            <!-- MODAL BODY -->
+					<div class="modal-body text-center">
+						<button class="btn btn-primary" onclick="openLoginModal()">Đăng nhập</button>
 						<button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		
+		<script th:if="${message != null}">
+			new bootstrap.Modal(document.getElementById("requiredLoginModal")).show();
+		</script>
+		
+		<div class="modal fade" id="loginModal" tabindex="-1" th:if="${user == null}">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content border-0 rounded-4 shadow">
+	
+					<div class="modal-header border-0">
+						<h5 class="modal-title fw-bold" id="loginTitle">Đăng nhập</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+	
+					<div class="modal-body px-4">
+	
+						<div id="loginBox">
+							<div th:replace="page/login :: loginForm"></div>
+						</div>
+	
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<script>
+			function openLoginModal() {
+			    // đóng modal yêu cầu login
+			    const requiredEl = document.getElementById("requiredLoginModal");
+			    const requiredModal = bootstrap.Modal.getInstance(requiredEl);
+			    if (requiredModal) {
+			        requiredModal.hide();
+			    }
+	
+			    // mở modal login
+			    const loginEl = document.getElementById("loginModal");
+			    const loginModal = new bootstrap.Modal(loginEl);
+			    loginModal.show();
+			}
+		</script>
 	</div>
 
 </body>

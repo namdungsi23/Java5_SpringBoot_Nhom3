@@ -19,12 +19,7 @@ public class AuthController {
 	@Autowired
 	AccountService Account;
 
-	@GetMapping("/auth")
-	public String authPage() {
-		return "page/login";
-
-	}
-
+/*
 	@PostMapping("/login")
 	public String login(Model model, @RequestParam String username, @RequestParam String password) {
 		Accounts user = auth.login(username, password);
@@ -38,7 +33,7 @@ public class AuthController {
 		}
 		return "redirect:/";
 	}
-
+*/
 	/* ==Xử lý Register== */
 	@PostMapping("/register")
 	public String register(@RequestParam String username, @RequestParam String email, @RequestParam String password,
@@ -69,9 +64,4 @@ public class AuthController {
 
 	}
 
-	@GetMapping("/logout")
-	public String logout() {
-		auth.logout();
-		return "redirect:/auth";
-	}
 }

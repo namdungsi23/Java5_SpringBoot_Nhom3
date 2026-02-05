@@ -28,6 +28,7 @@
 			<a href="#" th:text="${i + 1}"
 			th:classappend="${i == products.number} ? 'active' : '' "
 			th:onclick="|loadPage(${i})|"> </a>
+			
 		</span> <a href="#" th:if="${products.hasNext()}"
 			th:onclick="|loadPage(${products.number + 1})|">Next</a> <a href="#"
 			th:if="${!products.last}"

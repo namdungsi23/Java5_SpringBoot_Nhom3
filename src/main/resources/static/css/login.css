@@ -63,9 +63,8 @@
 
 /* nút */
 .btn-login {
-    background: linear-gradient(135deg, #1d2671, #c33764);
+    background-color: linear-gradient(135deg, #1d2671, #c33764);
     color: white;
-
     border: none;
 }
 

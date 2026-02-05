@@ -43,6 +43,11 @@ public class HomeController {
         return authService.getUser();
     }
 	
+	@ModelAttribute("count")
+	public int cart() {
+        return cartService.getCount();
+    }
+	
 	@GetMapping
 	public String index(Model model) {
 	    return "layouts/main-content";
@@ -105,17 +110,26 @@ public class HomeController {
 	}
 	@GetMapping("/login")
 	public String login(Model model){
-		return "page/login";
+		
+		return "fragments/header";
 	}
 	
 	@GetMapping("/logout")
 	public String logout(Model model){
+		cartService.clear();
 		authService.logout();
 		return "redirect:/";
 	}
 	@GetMapping("/register")
 	public String register(){
 		return "page/register";
+	}
+	
+	@GetMapping("/checkout")
+	public String checkout(Model model) {
+		model.addAttribute("cartItems", cartService.getItems());
+	    model.addAttribute("amount", cartService.getAmount());
+		return "/page/cart/checkout";
 	}
 	
 }

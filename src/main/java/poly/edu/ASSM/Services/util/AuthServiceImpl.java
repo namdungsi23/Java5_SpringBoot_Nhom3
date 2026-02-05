@@ -19,6 +19,7 @@ public class AuthServiceImpl  implements AuthService{
 	    SessionService sessionService;
 
 	    static final String USER_SESSION = "user";
+	    
 		@Override
 		public Accounts login(String username, String password) {
 			Accounts user = accountService.findByUsername(username);

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import poly.edu.ASSM.cart.CartItem;
+import poly.edu.ASSM.domain.CartItem;
 
 @Service
 public interface ShoppingCartService {

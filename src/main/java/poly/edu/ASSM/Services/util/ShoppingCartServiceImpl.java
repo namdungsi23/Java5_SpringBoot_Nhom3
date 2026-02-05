@@ -11,7 +11,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import poly.edu.ASSM.Entitty.Product;
 import poly.edu.ASSM.Services.core.ProductServiceImpl;
-import poly.edu.ASSM.cart.CartItem;
+import poly.edu.ASSM.domain.CartItem;
 
 @Service
 @SessionScope

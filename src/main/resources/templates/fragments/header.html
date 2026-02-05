@@ -4,25 +4,13 @@
 	<!-- LOGO -->
 	<div class="play-logo fw-bold fs-4">▶ Play Sport</div>
 
-<<<<<<< HEAD
     <!-- MENU -->
     <nav class="play-menu">
         <a th:href="@{/}" class="active">Trang chủ</a>
         <a th:href="@{/product}">Sản phẩm</a>
         <a th:href="@{/contact}">Liên hệ</a>
-        <a th:if="${user == null}" th:href="@{/login}">Đăng nhập</a>
-        <a th:if="${user != null}" th:href="@{/logout}">Đăng xuất</a>
-        <a th:href="@{/register}">Đăng ký</a>
         <a th:href="@{/more}">Xem thêm</a>
     </nav>
-=======
-	<!-- MENU -->
-	<nav class="play-menu d-flex gap-4">
-		<a th:href="@{/}" class="active">Trang chủ</a> <a
-			th:href="@{/product}">Sản phẩm</a> <a th:href="@{/contact}">Liên
-			hệ</a> <a th:href="@{/more}">Xem thêm</a>
-	</nav>
->>>>>>> a3bb4c69ef2560c1679c0290bd7dcb8dc728744b
 
 	<!-- RIGHT -->
 	<div class="d-flex align-items-center gap-3">
@@ -37,9 +25,10 @@
 
 		<!-- CART -->
 		<a th:href="@{/cart}"
-			class="btn btn-outline-primary position-relative"> 🛒 <span
-			class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-				3 </span>
+			class="btn btn-outline-primary position-relative"> 🛒 
+			<span th:text="${count}"
+				  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+			</span>
 		</a>
 
 		<!-- LOGIN ICON -->
@@ -50,7 +39,7 @@
 
 	<!-- ================= MODAL LOGIN / REGISTER ================= -->
 
-	<div class="modal fade" id="authModal" tabindex="-1">
+	<div class="modal fade" id="authModal" tabindex="-1" th:if="${user == null}">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content border-0 rounded-4 shadow">
 
@@ -73,5 +62,33 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="authModal" tabindex="-1" th:if="${user != null}">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content border-0 rounded-4 shadow">
+
+				<div class="modal-header border-0">
+					<h5 class="modal-title fw-bold" id="authTitle">Đăng xuất</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+			        <a th:href="@{/logout}">Đăng xuất</a>
+				<div class="modal-body px-4">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script th:if="${loginRequired}">
+		window.addEventListener('DOMContentLoaded', () -> {
+			const modal = document.getElementById("authModal");
+
+		    if (modal && window.bootstrap) {
+		        new bootstrap.Modal(modal).show();
+		    }
+		}});
+	</script>
+	
+	
 
 </header>
