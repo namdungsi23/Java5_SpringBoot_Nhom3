@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import poly.edu.ASSM.Entitty.Product;
 import poly.edu.ASSM.Services.core.CategoryService;
 import poly.edu.ASSM.Services.core.ProductService;
+import poly.edu.ASSM.Services.util.CloudinaryService;
 
 @Controller
 public class AdminProductController {
@@ -25,6 +27,9 @@ public class AdminProductController {
 
     @Autowired
     CategoryService ctr;
+    
+    @Autowired
+    CloudinaryService cloudService;
 
     @GetMapping({"/admin/product", "/admin/product/index"})
     public String index(
@@ -60,7 +65,9 @@ public class AdminProductController {
 
     // SAVE (CREATE + UPDATE)
     @PostMapping("/admin/product/save")
-    public String save(@ModelAttribute Product product) {
+    public String save(@ModelAttribute Product product,
+    				   @RequestParam MultipartFile uploadImage) {
+    	product.setImage(cloudService.uploadImage(uploadImage));
         prt.create(product);
         return "redirect:/admin/product";
     }

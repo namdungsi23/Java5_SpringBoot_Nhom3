@@ -43,23 +43,67 @@
 				<div>
 					<a
 						th:href="@{/product(
-	                        cat=${cat},
-	                        keyword=${keyword},
-	                        min=${min},
-	                        max=${max},
-	                        sort='price',
-	                        dir='asc'
-	                )}">Giá
-						↑</a> <a
+		                        cat=${cat},
+		                        keyword=${keyword},
+		                        min=${min},
+		                        max=${max},
+		                        sort='price',
+		                        dir='asc'
+		                )}">Giá ↑
+	                </a> 
+	                <a
 						th:href="@{/product(
 	                        cat=${cat},
 	                        keyword=${keyword},
 	                        min=${min},
 	                        max=${max},
-	                        sort='price',
+	                        sort='name',
 	                        dir='desc'
-	                )}">Giá
-						↓</a>
+	                	)}">Giá ↓
+					</a>
+					
+					<a
+						th:href="@{/product(
+		                        cat=${cat},
+		                        keyword=${keyword},
+		                        min=${min},
+		                        max=${max},
+		                        sort='name',
+		                        dir='asc'
+		                )}">Tên sản phẩm ↑
+	                </a> 
+	                <a
+						th:href="@{/product(
+	                        cat=${cat},
+	                        keyword=${keyword},
+	                        min=${min},
+	                        max=${max},
+	                        sort='name',
+	                        dir='desc'
+	                	)}">Tên sản phẩm ↓ 
+                	</a>
+                	
+                	<a
+						th:href="@{/product(
+		                        cat=${cat},
+		                        keyword=${keyword},
+		                        min=${min},
+		                        max=${max},
+		                        sort='createDate',
+		                        dir='asc'
+		                )}">Ngày tạo ↑
+	                </a> 
+	                <a
+						th:href="@{/product(
+	                        cat=${cat},
+	                        keyword=${keyword},
+	                        min=${min},
+	                        max=${max},
+	                        sort='createDate',
+	                        dir='desc'
+	                	)}">Ngày tạo ↓ 
+                	</a>
+					
 				</div>
 
 				<!-- AJAX CONTAINER -->

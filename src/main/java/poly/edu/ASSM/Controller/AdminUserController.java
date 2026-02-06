@@ -15,14 +15,14 @@ import poly.edu.ASSM.Entitty.Accounts;
 import poly.edu.ASSM.Services.core.AccountService;
 
 @Controller
-
+@RequestMapping("/admin/user")
 public class AdminUserController {
 
     @Autowired
     AccountService accSer;
 
     // HIỂN THỊ TRANG
- @GetMapping("/admin/user")
+ @GetMapping
     public String index(
             Model model,
             @RequestParam(defaultValue = "") String keyword,
@@ -43,7 +43,7 @@ public class AdminUserController {
         return "admin/user";
     }
 
- @GetMapping("/admin/user/edit/{username}")
+ @GetMapping("/edit/{username}")
  public String edit(
          @PathVariable String username,
          Model model,

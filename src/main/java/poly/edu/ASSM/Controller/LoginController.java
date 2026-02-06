@@ -30,15 +30,16 @@ public class LoginController {
 		
 		if(!authService.isLogin()) {
 			redirect.addFlashAttribute("error", "Username hoặc password không hợp lệ, vui lòng thử lại!"); 
-			return "redirect:/login";
+			return "redirect:/";
 		}
 		
 		if(chk) { 
 			cookieService.createCookie("rememberedUsername", username, 30);
-			System.out.println(cookieService.getCookie("rememberedUsername"));
 		}else {
 			cookieService.removeCookie("rememberedUsername");
 		}
+		
+		if(authService.isAdmin()) return "redirect:/admin";
 		
 		return "redirect:/product";
 	}
