@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Entity.Product;
 import poly.edu.ASSM.Repository.ProductRepository;
 
 @Service

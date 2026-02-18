@@ -1,172 +1,200 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/Admin-content}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/Admin-content}">
 <head>
-<meta charset="UTF-8">
-<title>Quản lý người dùng</title>
-
-
+    <meta charset="UTF-8">
+    <title>Quản lý người dùng</title>
 </head>
 
 <body>
+<div layout:fragment="main-content">
+    <div class="container-fluid">
 
-	<div layout:fragment="main-content">
+        <!-- TITLE -->
+        <h3 class="mb-4">👤 Quản lý người dùng</h3>
 
-		<div class="container-fluid">
+        <!-- SEARCH -->
+        <form class="d-flex mb-4 p-3 bg-light rounded shadow-sm"
+              method="get"
+              th:action="@{/admin/user}">
+            <input type="text"
+                   name="keyword"
+                   class="form-control form-control-lg me-2 border-primary"
+                   placeholder="🔍 Tìm username hoặc họ tên"
+                   th:value="${keyword}">
+            <button class="btn btn-primary btn-lg px-4">Tìm kiếm</button>
+        </form>
 
-			<!-- TITLE -->
-			<h3 class="mb-4">👤 Quản lý người dùng</h3>
+        <div class="row">
 
-			<form class="d-flex mb-5 p-3 bg-light rounded shadow-sm" method="get"
-				th:action="@{/admin/user}">
+            <!-- ================= FORM UPDATE ONLY ================= -->
+            <div class="col-md-4" th:if="${user.username != null}">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        Cập nhật người dùng
+                    </div>
 
-				<input type="text" name="keyword"
-					class="form-control form-control-lg me-2 border-primary"
-					placeholder="🔍 Tìm username hoặc họ tên" th:value="${keyword}">
+                    <div class="card-body">
+                        <form th:action="@{/admin/user/save}"
+                              th:object="${user}"
+                              method="post">
 
-				<button class="btn btn-primary btn-lg px-4">Tìm kiếm</button>
-			</form>
+                            <!-- USERNAME -->
+                            <div class="mb-3">
+                                <label class="form-label">Tên đăng nhập</label>
+                                <input type="text"
+                                       th:field="*{username}"
+                                       class="form-control"
+                                       readonly>
+                            </div>
 
-			<div class="row">
+                            <!-- FULLNAME -->
+                            <div class="mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input type="text"
+                                       th:field="*{fullname}"
+                                       class="form-control">
+                            </div>
 
-				<!-- ================= FORM ================= -->
-				<div class="col-md-4">
-					<div class="card shadow-sm">
-						<div class="card-header bg-primary text-white">Thông tin
-							người dùng</div>
+                            <!-- EMAIL -->
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email"
+                                       th:field="*{email}"
+                                       class="form-control">
+                            </div>
 
-						<div class="card-body">
+                            <!-- PHOTO -->
+                            <div class="mb-3">
+                                <label class="form-label">Ảnh đại diện</label>
+                                <input type="text"
+                                       th:field="*{photo}"
+                                       class="form-control">
+                            </div>
 
-							<form th:action="@{/admin/user/save}" th:object="${user}"
-								method="post">
+                            <!-- ACTIVATED -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       th:field="*{activated}">
+                                <label class="form-check-label">
+                                    Kích hoạt tài khoản
+                                </label>
+                            </div>
 
-								<div class="mb-3">
-									<label class="form-label">Tên đăng nhập</label> <input
-										type="text" th:field="*{username}" class="form-control"
-										placeholder="Nhập username" required>
-								</div>
+                            <button class="btn btn-success w-100">
+                                💾 Cập nhật
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-								<div class="mb-3">
-									<label class="form-label">Mật khẩu</label> <input
-										type="password" th:field="*{password}" class="form-control"
-										placeholder="Nhập mật khẩu" required>
-								</div>
+            <!-- ================= TABLE ================= -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        Danh sách người dùng
+                    </div>
 
-								<div class="mb-3">
-									<label class="form-label">Họ tên</label> <input type="text"
-										th:field="*{fullname}" class="form-control"
-										placeholder="Nhập họ tên">
-								</div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Username</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Quyền</th>
+                                <th>Trạng thái</th>
+                                <th class="text-center">Hành động</th>
+                            </tr>
+                            </thead>
 
-								<div class="mb-3">
-									<label class="form-label">Email</label> <input type="email"
-										th:field="*{email}" class="form-control"
-										placeholder="example@gmail.com">
-								</div>
+                            <tbody>
+                            <tr th:each="u : ${users}">
+                                <td th:text="${u.username}"></td>
+                                <td th:text="${u.fullname}"></td>
+                                <td th:text="${u.email}"></td>
 
-								<div class="form-check mb-2">
-									<input class="form-check-input" type="checkbox"
-										th:field="*{admin}"> <label class="form-check-label">
-										Quyền quản trị (Admin) </label>
-								</div>
+                                <td>
+                                    <span th:if="${u.superAdmin}"
+                                          class="badge bg-danger">SUPER ADMIN</span>
+                                    <span th:if="${u.admin == true and u.superAdmin == false}"
+      class="badge bg-success">ADMIN</span>
 
-								<div class="form-check mb-3">
-									<input class="form-check-input" type="checkbox"
-										th:field="*{activated}"> <label
-										class="form-check-label"> Kích hoạt tài khoản </label>
-								</div>
+                                    <span th:if="${u.admin == false and u.superAdmin == false}"
+      class="badge bg-secondary">USER</span>
 
-								<div class="d-flex gap-2">
-									<button class="btn btn-success w-100">💾 Lưu</button>
-									<a th:href="@{/admin/user}" class="btn btn-secondary w-100">
-										🔄 Làm mới </a>
-								</div>
+                                </td>
 
-							</form>
-						</div>
-					</div>
-				</div>
+                                <td>
+                                    <span th:if="${u.activated}"
+                                          class="badge bg-primary">Hoạt động</span>
+                                    <span th:if="${!u.activated}"
+                                          class="badge bg-danger">Khóa</span>
+                                </td>
 
-				<!-- ================= TABLE ================= -->
-				<div class="col-md-8">
-					<div class="card shadow-sm">
-						<div class="card-header bg-dark text-white">Danh sách người
-							dùng</div>
+                                <td class="text-center">
+                                    <!-- EDIT -->
+                                    <a th:href="@{/admin/user/edit/{u}(u=${u.username})}"
+                                       class="btn btn-sm btn-warning">
+                                        ✏️
+                                    </a>
 
-						<div class="card-body table-responsive">
-							<table class="table table-bordered table-hover align-middle">
-								<thead class="table-light">
-									<tr>
-										<th>Username</th>
-										<th>Họ tên</th>
-										<th>Email</th>
-										<th>Quyền</th>
-										<th>Trạng thái</th>
-										<th class="text-center">Hành động</th>
-									</tr>
-								</thead>
+                                    <!-- DELETE: chỉ super admin & không xoá super admin -->
+                                    <a th:if="${session.user.superAdmin == true 
+          and u.superAdmin == false
+          and session.user.username != u.username}"
+   th:href="@{/admin/user/delete/{u}(u=${u.username})}"
+   class="btn btn-sm btn-danger"
+   onclick="return confirm('Bạn chắc chắn muốn xóa user này?')">
+    🗑️
+</a>
 
-								<tbody>
-									<tr th:each="u : ${users}">
-										<td th:text="${u.username}"></td>
-										<td th:text="${u.fullname}"></td>
-										<td th:text="${u.email}"></td>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-										<td><span th:if="${u.admin}" class="badge bg-success">Admin</span>
-											<span th:if="${!u.admin}" class="badge bg-secondary">User</span>
-										</td>
+                        <!-- PAGINATION -->
+                        <nav>
+                            <ul class="pagination justify-content-center">
 
-										<td><span th:if="${u.activated}" class="badge bg-primary">Hoạt
-												động</span> <span th:if="${!u.activated}" class="badge bg-danger">Khóa</span>
-										</td>
+                                <li class="page-item"
+                                    th:classappend="${pages.first} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{/admin/user(page=${pages.number - 1}, keyword=${keyword})}">
+                                        «
+                                    </a>
+                                </li>
 
-										<td class="text-center"><a
-											th:href="@{/admin/user/edit/{u}(u=${u.username})}"
-											class="btn btn-sm btn-warning"> ✏️ </a> <a
-											th:href="@{/admin/user/delete/{u}(u=${u.username})}"
-											class="btn btn-sm btn-danger"
-											onclick="return confirm('Bạn chắc chắn muốn xóa?')"> 🗑️
-										</a></td>
-									</tr>
-								</tbody>
+                                <li class="page-item"
+                                    th:each="i : ${#numbers.sequence(0, pages.totalPages - 1)}"
+                                    th:classappend="${i == pages.number} ? 'active'">
+                                    <a class="page-link"
+                                       th:text="${i + 1}"
+                                       th:href="@{/admin/user(page=${i}, keyword=${keyword})}">
+                                    </a>
+                                </li>
 
-							</table>
-							<nav>
-								<ul class="pagination justify-content-center">
+                                <li class="page-item"
+                                    th:classappend="${pages.last} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{/admin/user(page=${pages.number + 1}, keyword=${keyword})}">
+                                        »
+                                    </a>
+                                </li>
 
-									<!-- Previous -->
-									<li class="page-item"
-										th:classappend="${pages.first} ? 'disabled'"><a
-										class="page-link"
-										th:href="@{/admin/user(page=${pages.number - 1}, keyword=${keyword})}">
-											« </a></li>
+                            </ul>
+                        </nav>
 
-									<!-- Page numbers -->
-									<li class="page-item"
-										th:each="i : ${#numbers.sequence(0, pages.totalPages - 1)}"
-										th:classappend="${i == pages.number} ? 'active'"><a
-										class="page-link" th:text="${i + 1}"
-										th:href="@{/admin/user(page=${i}, keyword=${keyword})}"> </a>
-									</li>
+                    </div>
+                </div>
+            </div>
 
-									<!-- Next -->
-									<li class="page-item"
-										th:classappend="${pages.last} ? 'disabled'"><a
-										class="page-link"
-										th:href="@{/admin/user(page=${pages.number + 1}, keyword=${keyword})}">
-											» </a></li>
-
-								</ul>
-							</nav>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-
-	</div>
-
+        </div>
+    </div>
+</div>
 </body>
 </html>

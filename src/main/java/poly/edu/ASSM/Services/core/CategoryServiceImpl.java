@@ -8,81 +8,82 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import poly.edu.ASSM.Entitty.Category;
+import poly.edu.ASSM.Entity.Category;
 import poly.edu.ASSM.Repository.CategoryRepository;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    private CategoryRepository repo;
+	@Autowired
+	private CategoryRepository repo;
 
 	@Override
 	public List<Category> findAll() {
-		// TODO Auto-generated method stub
 		return repo.findAll();
 	}
 
 	@Override
 	public Category findById(String id) {
-		Optional<Category> opt = repo.findById(id);
-        return opt.orElse(null);
+		return repo.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục"));
 	}
 
 	@Override
 	public Category create(Category category) {
-		if (existsByName(category.getName())) {
-            return null;
-        }
-        return repo.save(category);
+
+		// ❌ Admin không được set ID
+		category.setId(generateCategoryId());
+
+		if (repo.existsByName(category.getName())) {
+			throw new RuntimeException("Tên danh mục đã tồn tại");
+		}
+
+		return repo.save(category);
 	}
 
 	@Override
 	public Category update(Category category) {
-		 if (!repo.existsById(category.getId())) {
-	            return null;
-	        }
-	        return repo.save(category);
+
+		Category old = findById(category.getId());
+
+		// ❌ Không cho sửa ID
+		old.setName(category.getName());
+
+		return repo.save(old);
 	}
 
 	@Override
 	public void delete(String id) {
-		 if (canDelete(id)) {
-	            repo.deleteById(id);
-	        }
+
+		if (!canDelete(id)) {
+			throw new RuntimeException("Danh mục đang chứa sản phẩm");
+		}
+
+		repo.deleteById(id);
 	}
 
 	@Override
 	public boolean existsByName(String name) {
-		 return repo.existsByName(name);
+		return repo.existsByName(name);
 	}
 
 	@Override
 	public boolean canDelete(String id) {
-		 Category category = findById(id);
-	        if (category == null) {
-	            return false;
-	        }
-	        // không cho xóa nếu còn product
-	        return category.getProducts() == null || category.getProducts().isEmpty();
-	    }
+		return repo.countProductsByCategoryId(id) == 0;
+	}
 
 	@Override
 	public Page<Category> search(String keyword, Pageable pageable) {
-		 if (keyword == null || keyword.trim().isEmpty()) {
-		        return repo.findAll(pageable);
-		    }
-		    return repo.findByNameContainingIgnoreCase(keyword, pageable);
+		return repo.findByNameContainingIgnoreCase(keyword, pageable);
 	}
 
 	@Override
 	public long countProductsByCategory(String categoryId) {
-		// TODO Auto-generated method stub
-	 return repo.countProductsByCategoryId(categoryId);
-	}
+		return repo.countProductsByCategoryId(categoryId);
 	}
 
-  
-
-   
-
+	// 🔥 TỰ SINH ID
+	private String generateCategoryId() {
+		long count = repo.count() + 1;
+		return "CAT" + String.format("%03d", count);
+	}
+}

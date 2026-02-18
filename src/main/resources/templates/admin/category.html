@@ -60,6 +60,14 @@
 								th:action="${category.id == null} ? @{/admin/category/create} : @{/admin/category/update}"
 								method="post">
 
+								<!-- HIỂN THỊ ID (KHÔNG CHO SỬA) -->
+								<div class="mb-2" th:if="${category.id != null}">
+									<label class="form-label fw-semibold">Mã danh mục</label> <input
+										type="text" th:value="${category.id}" class="form-control"
+										readonly>
+								</div>
+
+								<!-- 🔥 BẮT BUỘC: GỬI ID VỀ SERVER -->
 								<input type="hidden" th:field="*{id}">
 
 								<div class="mb-3">
@@ -71,6 +79,7 @@
 								<button class="btn btn-success w-100 fw-semibold">💾
 									Lưu danh mục</button>
 							</form>
+
 						</div>
 					</div>
 				</div>

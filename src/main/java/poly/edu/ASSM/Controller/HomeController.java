@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import poly.edu.ASSM.Entitty.Accounts;
-import poly.edu.ASSM.Entitty.Category;
-import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Entity.Accounts;
+import poly.edu.ASSM.Entity.Category;
+import poly.edu.ASSM.Entity.Product;
 import poly.edu.ASSM.Services.core.CategoryServiceImpl;
 import poly.edu.ASSM.Services.core.ProductServiceImpl;
 import poly.edu.ASSM.Services.util.AuthServiceImpl;
@@ -50,13 +50,10 @@ public class HomeController {
 	
 	@GetMapping
 	public String index(Model model) {
-	    return "layouts/main-content";
-	}
-	
-	@GetMapping("/home")
-	public String home() {
 	    return "page/index";
 	}
+	
+	
 	
 	@GetMapping("/product")
     public String products(

@@ -8,18 +8,32 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import poly.edu.ASSM.Entitty.Orders;
+import poly.edu.ASSM.Entity.Orders;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
-	// Lấy đơn hàng theo username
+	 // Đơn theo user
     List<Orders> findByAccountUsername(String username);
 
-    // Lấy đơn hàng theo ngày
+    // Đơn theo ngày
     List<Orders> findByCreateDate(LocalDate date);
 
-    // Lấy đơn hàng trong khoảng ngày
+    // Đơn theo khoảng ngày
     List<Orders> findByCreateDateBetween(LocalDate from, LocalDate to);
+
+    // Thống kê hôm nay
     @Query("SELECT COUNT(o) FROM Orders o WHERE o.createDate = :today")
     long countTodayOrders(@Param("today") LocalDate today);
+
+    // Thống kê theo trạng thái
+    @Query("""
+        SELECT COUNT(o)
+        FROM Orders o
+        WHERE o.createDate = :today
+          AND o.status = :status
+    """)
+    long countTodayOrdersByStatus(
+        @Param("today") LocalDate today,
+        @Param("status") String status
+    );
 }

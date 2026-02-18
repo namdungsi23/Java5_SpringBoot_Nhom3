@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
-import poly.edu.ASSM.Entitty.Accounts;
+import poly.edu.ASSM.Entity.Accounts;
 import poly.edu.ASSM.Services.core.AccountService;
 import poly.edu.ASSM.Services.web.SessionService;
 

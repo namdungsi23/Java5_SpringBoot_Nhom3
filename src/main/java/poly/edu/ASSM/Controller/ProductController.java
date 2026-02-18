@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import poly.edu.ASSM.Entitty.Category;
-import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Entity.Category;
+import poly.edu.ASSM.Entity.Product;
 import poly.edu.ASSM.Services.core.CategoryServiceImpl;
 import poly.edu.ASSM.Services.core.ProductServiceImpl;
 

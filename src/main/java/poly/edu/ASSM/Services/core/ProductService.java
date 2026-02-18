@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
-import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Entity.Product;
 
 public interface ProductService {
 	List<Product> findAll();
