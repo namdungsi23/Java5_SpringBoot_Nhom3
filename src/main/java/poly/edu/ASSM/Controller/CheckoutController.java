@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import poly.edu.ASSM.Entitty.OrderDetails;
-import poly.edu.ASSM.Entitty.Orders;
+import poly.edu.ASSM.Entity.OrderDetails;
+import poly.edu.ASSM.Entity.Orders;
 import poly.edu.ASSM.Services.core.*;
 import poly.edu.ASSM.Services.util.AuthServiceImpl;
 import poly.edu.ASSM.Services.util.ShoppingCartServiceImpl;

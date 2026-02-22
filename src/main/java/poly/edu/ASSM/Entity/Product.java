@@ -1,4 +1,4 @@
-package poly.edu.ASSM.Entitty;
+package poly.edu.ASSM.Entity;
 
 import java.time.LocalDate;
 

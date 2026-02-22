@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
-import poly.edu.ASSM.Entitty.Accounts;
+import poly.edu.ASSM.Entity.Accounts;
 import poly.edu.ASSM.Services.util.AuthServiceImpl;
 import poly.edu.ASSM.Services.util.ShoppingCartServiceImpl;
 import poly.edu.ASSM.exception.OutOfStockException;

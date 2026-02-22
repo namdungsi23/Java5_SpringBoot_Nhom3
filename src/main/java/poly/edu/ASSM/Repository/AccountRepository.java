@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import poly.edu.ASSM.Entitty.Accounts;
+import poly.edu.ASSM.Entity.Accounts;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Accounts, String> {

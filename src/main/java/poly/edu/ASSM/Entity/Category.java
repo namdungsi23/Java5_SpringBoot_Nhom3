@@ -1,6 +1,6 @@
-package poly.edu.ASSM.Entitty;
+package poly.edu.ASSM.Entity;
 
-import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,31 +8,35 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+
 @Entity
-@Table(name = "Orders")
-public class Orders {
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private int id;
+@Table(name = "Categories")
+public class Category {
+	 	@Id
+	    @Column(name = "Id")
+	    private String id;
 
-	    @Column(name = "createdate")
-	  		LocalDate createDate = LocalDate.now();
+	    private String name;
 
-	    private String address;
+	    @OneToMany
+	    @JoinColumn(name = "Category_Id")
 
-	    @ManyToOne
-	    @JoinColumn(name = "Username")
-	    private Accounts account;
-}
+	    private List<Product> products;
+		public Category(String name) {
+			super();
+			this.name = name;
+		}
+	}
+
+

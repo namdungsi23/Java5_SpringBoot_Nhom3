@@ -7,8 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import poly.edu.ASSM.Entitty.Product;
 import poly.edu.ASSM.Services.core.InventoryService;
+import poly.edu.ASSM.Entity.Product;
 import poly.edu.ASSM.Services.core.ProductService;
 import poly.edu.ASSM.Services.web.SessionService;
 import poly.edu.ASSM.exception.OutOfStockException;

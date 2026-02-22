@@ -2,7 +2,7 @@ package poly.edu.ASSM.Services.util;
 
 import java.util.Collection;
 
-import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Entity.Product;
 
 public interface CartService {
 	 void add(Integer productId);

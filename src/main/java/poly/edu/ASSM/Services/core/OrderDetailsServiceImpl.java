@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import poly.edu.ASSM.Entitty.OrderDetails;
+import poly.edu.ASSM.Entity.OrderDetails;
 import poly.edu.ASSM.Repository.OrderDetailsRepository;
 
 @Service
@@ -13,52 +13,62 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
 	@Autowired
 	OrderDetailsRepository repo;
-	@Override
-	public List<OrderDetails> findAll() {
-		// TODO Auto-generated method stub
-		return repo.findAll();
-	}
 
 	@Override
-	public OrderDetails findById(int id) {
-		// TODO Auto-generated method stub
-		return repo.findById(id).orElse(null);
-	}
+    public List<OrderDetails> findAll() {
+        return repo.findAll();
+    }
 
-	@Override
-	public OrderDetails create(OrderDetails detail) {
-		// TODO Auto-generated method stub
-		return repo.save(detail);
-	}
+    @Override
+    public OrderDetails findById(int id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException(
+                        "Không tìm thấy chi tiết đơn hàng ID = " + id));
+    }
 
-	@Override
-	public OrderDetails update(OrderDetails detail) {
-		// TODO Auto-generated method stub
-		return repo.save(detail);
-	}
+    @Override
+    public OrderDetails create(OrderDetails detail) {
+        if (detail.getQuantity() == null || detail.getQuantity() <= 0) {
+            throw new RuntimeException("Số lượng phải > 0");
+        }
+        if (detail.getPrice() == null || detail.getPrice() <= 0) {
+            throw new RuntimeException("Giá phải > 0");
+        }
+        return repo.save(detail);
+    }
 
-	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-		repo.deleteById(id);
-	}
+    @Override
+    public OrderDetails update(OrderDetails detail) {
+        if (detail.getId() == null || !repo.existsById(detail.getId())) {
+            throw new RuntimeException("Không tồn tại OrderDetail để cập nhật");
+        }
+        return repo.save(detail);
+    }
 
-	@Override
-	public List<OrderDetails> findByOrder(int orderId) {
-		// TODO Auto-generated method stub
-		return repo.findByOrderId(orderId);
-	}
+    @Override
+    public void delete(int id) {
+        if (!repo.existsById(id)) {
+            throw new RuntimeException("Không tồn tại OrderDetail để xóa");
+        }
+        repo.deleteById(id);
+    }
 
-	@Override
-	public List<OrderDetails> findByProduct(int productId) {
-		// TODO Auto-generated method stub
-		return repo.findByProductId(productId);
-	}
 
-	@Override
-	public void deleteByOrder(int orderId) {
-		// TODO Auto-generated method stub
-	 repo.deleteByOrderId(orderId);
-	}
+
+    @Override
+    public List<OrderDetails> findByOrder(int orderId) {
+        return repo.findByOrder_Id(orderId);
+    }
+
+    @Override
+    public List<OrderDetails> findByProduct(int productId) {
+        return repo.findByProduct_Id(productId);
+    }
+
+    @Override
+    public void deleteByOrder(int orderId) {
+        repo.deleteByOrder_Id(orderId);
+    }
+	
 
 }

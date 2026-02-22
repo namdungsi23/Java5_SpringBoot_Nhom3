@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Entity.Product;
 import poly.edu.ASSM.Services.core.CategoryService;
 import poly.edu.ASSM.Services.core.ProductService;
 import poly.edu.ASSM.Services.util.CloudinaryService;

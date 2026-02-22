@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import poly.edu.ASSM.Entitty.Category;
+import poly.edu.ASSM.Entity.Category;
 import poly.edu.ASSM.Services.core.CategoryService;
 
 @Controller
@@ -71,18 +71,33 @@ public class AdminCategoryController {
 
 	    // ================== EDIT ==================
 	    @GetMapping("/edit/{id}")
-	    public String edit(@PathVariable("id") String id, Model model) {
-	    	 model.addAttribute("category", categoryService.findById(id));
-	        model.addAttribute("categories", categoryService.findAll());
+	    public String edit(
+	            @PathVariable String id,
+	            Model model,
+	            @RequestParam(required = false) String keyword,
+	            @RequestParam(required = false) String size,
+	            @RequestParam(defaultValue = "0") int page
+	    ) {
+	        // load lại list giống index
+	        index(model, keyword, size, page);
+
+	        // category cần sửa
+	        model.addAttribute("category", categoryService.findById(id));
+
 	        return "admin/category";
 	    }
+
 
 	    // ================== UPDATE ==================
 	    @PostMapping("/update")
 	    public String update(@ModelAttribute("category") Category category) {
+	        if (category.getId() == null || category.getId().isEmpty()) {
+	            throw new RuntimeException("Cập nhật danh mục bắt buộc phải có ID");
+	        }
 	        categoryService.update(category);
 	        return "redirect:/admin/category";
 	    }
+
 
 	    // ================== DELETE ==================
 	    @GetMapping("/delete/{id}")

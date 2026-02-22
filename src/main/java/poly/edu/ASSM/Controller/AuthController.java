@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-import poly.edu.ASSM.Entitty.Accounts;
+import poly.edu.ASSM.Entity.Accounts;
 import poly.edu.ASSM.Services.core.AccountService;
 import poly.edu.ASSM.Services.util.AuthService;
 
@@ -38,12 +38,12 @@ public class AuthController {
 	@PostMapping("/register")
 	public String register(@RequestParam String username, @RequestParam String email, @RequestParam String password,
 			@RequestParam String confirm, Model model) {
-		if (Account.existsByUsername(username)) {
-			model.addAttribute("error", "Tên đăng nhập đã tồn tại!");
-			model.addAttribute("showRegister", true);
-			return "page/login";
-
+		if (Account.findByUsername(username) != null) {
+		    model.addAttribute("error", "Tên đăng nhập đã tồn tại!");
+		    model.addAttribute("showRegister", true);
+		    return "page/login";
 		}
+
 		if (!password.equals(confirm)) {
 			model.addAttribute("error", "Mật khẩu không khớp!");
 			model.addAttribute("showRegister", true);
@@ -56,7 +56,7 @@ public class AuthController {
 		acc.setEmail(email);
 		acc.setActivated(true);
 		acc.setAdmin(true);
-		Account.save(acc);
+		Account.update(acc);
 		model.addAttribute("sucess", "Đăng nhập thành công!Hãy đăng nhập");
 		model.addAttribute("showRegister", false);
 		return "page/login";

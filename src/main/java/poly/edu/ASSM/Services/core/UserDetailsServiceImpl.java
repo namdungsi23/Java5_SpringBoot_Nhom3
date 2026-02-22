@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import poly.edu.ASSM.Entitty.Accounts;
+import poly.edu.ASSM.Entity.Accounts;
 
 public class UserDetailsServiceImpl implements UserDetailsService{
 
