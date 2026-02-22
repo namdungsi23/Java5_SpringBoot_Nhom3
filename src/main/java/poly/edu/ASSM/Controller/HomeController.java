@@ -7,6 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +19,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import poly.edu.ASSM.Entitty.Accounts;
 import poly.edu.ASSM.Entitty.Category;
 import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Services.core.AccountsServiceImpl;
 import poly.edu.ASSM.Services.core.CategoryServiceImpl;
 import poly.edu.ASSM.Services.core.ProductServiceImpl;
 import poly.edu.ASSM.Services.util.AuthServiceImpl;
 import poly.edu.ASSM.Services.util.ShoppingCartServiceImpl;
+import poly.edu.ASSM.domain.PaymentMethod;
 
 
 @Controller
@@ -33,13 +42,35 @@ public class HomeController {
 	AuthServiceImpl authService;
 	
 	@Autowired
+	AccountsServiceImpl accountService;
+	
+	@Autowired
 	ProductServiceImpl productService;
 	
 	@Autowired
 	CategoryServiceImpl catService;
 	
 	@ModelAttribute("user")
-    public Accounts user() {
+    public Accounts user(@AuthenticationPrincipal OAuth2User user) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		 if (auth == null || !auth.isAuthenticated()) {
+		        return null;
+		    }
+
+		    Object principal = auth.getPrincipal();
+		    
+		    if (principal instanceof String &&
+		            principal.equals("anonymousUser")) {
+		            return null;
+		        }
+
+		    
+		    if (principal instanceof OAuth2User oauthUser) {
+		        String email = oauthUser.getAttribute("email");
+		        return accountService.findByUsername(email);
+		    }
+		
         return authService.getUser();
     }
 	
@@ -47,13 +78,8 @@ public class HomeController {
 	public int cart() {
         return cartService.getCount();
     }
-	
-	@GetMapping
-	public String index(Model model) {
-	    return "layouts/main-content";
-	}
-	
-	@GetMapping("/home")
+		
+	@GetMapping("/")
 	public String home() {
 	    return "page/index";
 	}
@@ -114,12 +140,6 @@ public class HomeController {
 		return "fragments/header";
 	}
 	
-	@GetMapping("/logout")
-	public String logout(Model model){
-		cartService.clear();
-		authService.logout();
-		return "redirect:/";
-	}
 	@GetMapping("/register")
 	public String register(){
 		return "page/register";
@@ -130,6 +150,50 @@ public class HomeController {
 		model.addAttribute("cartItems", cartService.getItems());
 	    model.addAttribute("amount", cartService.getAmount());
 		return "/page/cart/checkout";
+	}
+	
+
+	@GetMapping("/payment")
+	public String paymentView(@ModelAttribute("user") Accounts user,
+	                          @RequestParam PaymentMethod paymentMethod,
+	                          Model model) {
+
+	    if (user == null) {
+	        return "redirect:/";
+	    }
+
+	    model.addAttribute("username", user.getUsername());
+	    model.addAttribute("paymentMethod", paymentMethod);
+	    model.addAttribute("amount", cartService.getAmount());
+	    model.addAttribute("proceeding", true);
+
+	    return "page/cart/payment";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest req, HttpServletResponse resp){
+		cartService.clear();
+		authService.logout();
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(auth != null) {
+			new SecurityContextLogoutHandler().logout(req, resp, auth);
+		}
+		
+		return "redirect:/";
+	}
+	
+	@GetMapping("/logout/oauth2")
+	public String logoutOauth2(HttpServletRequest req, HttpServletResponse resp) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(auth != null) {
+			new SecurityContextLogoutHandler().logout(req, resp, auth);
+		}
+		
+		return "redirect:/";
 	}
 	
 }

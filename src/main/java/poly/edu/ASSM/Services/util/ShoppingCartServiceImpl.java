@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Services.core.InventoryService;
 import poly.edu.ASSM.Services.core.ProductServiceImpl;
 import poly.edu.ASSM.domain.CartItem;
+import poly.edu.ASSM.exception.OutOfStockException;
 
 @Service
 @SessionScope
@@ -20,6 +22,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
 	
 	@Autowired
 	ProductServiceImpl productService;
+	
+	@Autowired
+	InventoryService inventoryService;
 
 	@Override
 	public CartItem add(Integer id) {
@@ -59,7 +64,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
 			throw new IllegalArgumentException("Không tìm thấy sản phẩm");
 		}
 		
-		item.setQuantity(qty);
+		 try {
+		        inventoryService.checkInventory(id, qty);
+		        item.setQuantity(qty);
+
+		    } catch (OutOfStockException e) {
+		        throw e; 
+		    }
+		
 		
 		return item;
 	}

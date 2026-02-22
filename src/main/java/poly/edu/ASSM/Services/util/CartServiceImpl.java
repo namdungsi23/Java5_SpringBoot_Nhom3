@@ -8,18 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import poly.edu.ASSM.Entitty.Product;
+import poly.edu.ASSM.Services.core.InventoryService;
 import poly.edu.ASSM.Services.core.ProductService;
 import poly.edu.ASSM.Services.web.SessionService;
+import poly.edu.ASSM.exception.OutOfStockException;
 
 @Service
 public class CartServiceImpl implements CartService {
-
-	
 	@Autowired
 	ProductService productService;
+	
 	@Autowired
 	SessionService sessionService;
+	
+	@Autowired
+	InventoryService inventoryService;
+	
 	static final String CART_KEY = "cart";
+	
 	//Lấy cart từ Session
 	Map<Integer, Product> getCart() {
         Map<Integer, Product> cart = sessionService.getAttribute(CART_KEY);
@@ -29,6 +35,7 @@ public class CartServiceImpl implements CartService {
         }
         return cart;
     }
+	
 	@Override
 	
 	public void add(Integer productId) {
@@ -51,11 +58,20 @@ public class CartServiceImpl implements CartService {
 
 	@Override
 	public void update(Integer productId, int quantity) {
-		Product product = getCart().get(productId);
-        if (product != null) {
-            product.setQuantity(quantity);
-        }
+	    Product product = getCart().get(productId);
+
+	    if(product == null) {
+	        return;
+	    }
+	    try {
+	        inventoryService.checkInventory(productId, quantity);
+	        product.setQuantity(quantity);
+
+	    } catch (OutOfStockException e) {
+	        throw e; 
+	    }
 	}
+
 
 	@Override
 	public void clear() {

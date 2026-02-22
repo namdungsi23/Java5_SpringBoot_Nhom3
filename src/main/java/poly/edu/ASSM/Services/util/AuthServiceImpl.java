@@ -48,7 +48,7 @@ public class AuthServiceImpl  implements AuthService{
 
 		@Override
 		public Accounts getUser() {
-			 return sessionService.getAttribute(USER_SESSION);
+			 return sessionService.getAttribute(USER_SESSION, Accounts.class);
 		}
 
 		@Override

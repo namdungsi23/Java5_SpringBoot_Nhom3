@@ -197,4 +197,122 @@ INSERT INTO OrderDetails VALUES
 (1,12,3400000,1),
 (2,5,1700000,2),
 (3,22,2800000,1);
+
 select * from Products
+
+USE Java5PlaySport1;
+
+CREATE TABLE INVENTORY (
+	id BIGINT IDENTITY(1,1) PRIMARY KEY,
+	product_id INT NOT NULL UNIQUE,
+	quantity INT NOT NULL CHECK(quantity >=0),
+	last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (product_id) REFERENCES Products(Id)
+)
+
+--- Câu lệnh insert dữ liệu mẫu vô Inventory - chỉ chạy duy nhất một lần 
+INSERT INTO INVENTORY (product_id, quantity)
+SELECT Id, 100
+FROM Products
+
+SELECT * FROM INVENTORY
+
+-- Trigger tự động cập nhật inventory với số lượng mặc định là 100 
+CREATE TRIGGER trg_CreateInventory
+ON PRODUCTS
+AFTER INSERT
+AS
+BEGIN
+	INSERT INTO INVENTORY(product_id, quantity)
+	SELECT ins.Id, 100
+	FROM inserted ins
+END;
+
+-- Stored Procedure để check số lượng tồn kho và từ động cập nhật hàng tồn kho --
+
+CREATE OR ALTER PROCEDURE checkAndAddToInventory
+	@product_id INT,
+	@amount INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF @amount <= 0
+	BEGIN
+		RAISERROR(N'Số lượng đầu vào phải lớn 0!',16,1);
+		RETURN;
+	END
+
+	UPDATE INVENTORY
+	SET quantity = quantity + @amount,
+	last_updated = GETDATE()
+	WHERE product_id = @product_id 
+
+	IF @@ROWCOUNT = 0 
+	BEGIN
+		IF NOT EXISTS(SELECT 1 FROM INVENTORY WHERE product_id = @product_id)
+			RAISERROR(N'Sản phẩm không tồn tại!',16,1);
+			RETURN;
+	END
+
+END;
+
+-- STORE PROCEDURE ĐỂ CẬP NHẬT GIẢM SỐ LƯỢNG TỒN KHO
+CREATE OR ALTER PROCEDURE sp_CheckAndUpdateInventory
+	@product_id INT,
+	@amount INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF @amount <= 0
+	BEGIN
+		RAISERROR(N'Số lượng đầu vào phải lớn 0!',16,1);
+		RETURN;
+	END
+
+	UPDATE INVENTORY WITH (UPDLOCK, ROWLOCK)
+	SET quantity = quantity - @amount,
+		last_updated = GETDATE()
+	WHERE product_id = @product_id
+	  AND quantity >= @amount;
+
+	IF @@ROWCOUNT = 0
+	BEGIN
+		RAISERROR(N'Không đủ hàng hoặc sản phẩm không tồn tại!',16,1);
+		RETURN;
+	END
+
+END;
+
+-- Stored Procedure để check số lượng tồn kho --
+
+CREATE OR ALTER PROCEDURE sp_CheckInventory
+	@product_id INT,
+	@amount INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @quantity INT
+
+	SELECT @quantity = i.quantity
+	FROM INVENTORY i
+	WHERE i.product_id = @product_id
+
+	IF @quantity IS NULL
+	BEGIN
+		;THROW 50002, N'Sản phẩm không tồn tại', 1; -- Non-existent product
+		RETURN;
+	END
+
+	 IF @amount > @quantity
+	BEGIN
+		;THROW 50003, N'Hết hàng', 1; -- Invalid input
+		RETURN;
+	END
+
+END
+
+
+

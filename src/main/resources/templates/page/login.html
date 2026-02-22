@@ -6,7 +6,7 @@
 
 	<div th:fragment="loginForm">
 
-            <form th:action="@{/login/validate}" method="post">
+            <form id="form-login" th:action="@{/login/validate}" method="post">
             	<div class="fw-semibold bg-danger text-white p-2 rounded" 
             		 th:if="${error}"
             		  th:text="${error}"></div>
@@ -22,16 +22,23 @@
                 <div class="form-floating mb-3">
                 	<input type="password" name="pwd" placeholder="Nhập mật khẩu" class="form-control"><label>Mật khẩu</label>
                 </div>
-               
-                
                 
                 <div id="checkbox" class="d-flex flex-row justify-content-start align-items-center my-3">
 	                <input id="chk" name="chk" type="checkbox" class="mt-3 me-1">
 	                <label for="chk" class="mt-3">Remember me</label>
                 </div>
 
-			<button class="btn btn-primary w-100 py-2 fw-semibold">Đăng
-				nhập</button>
+			<button class="btn btn-primary w-100 py-2 fw-semibold">Đăng nhập</button>
+			
+			<div class="text-center my-3 text-muted">
+			    — hoặc —
+			</div>	
+			
+			<a th:href="@{/oauth2/authorization/google}"
+				class="btn btn-outline-danger w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+				<i class="bi bi-google"></i>
+				 Đăng nhập bằng Google
+			</a>
 
 			<div class="text-center mt-3 small">
 				Chưa có tài khoản? <a href="#" onclick="showRegister()">Đăng ký</a>

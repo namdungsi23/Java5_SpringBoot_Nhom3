@@ -3,6 +3,7 @@ package poly.edu.ASSM.Controller;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -44,15 +45,9 @@ public class CheckoutController {
 	@Autowired
 	OrderDetailsServiceImpl odService;
 	
-	@GetMapping("/payment")
-	public String paymentView(@RequestParam PaymentMethod paymentMethod,
-							  Model model) {
-		model.addAttribute("username",authService.getUser().getUsername());
-		model.addAttribute("paymentMethod", paymentMethod);
-	    model.addAttribute("amount", cartService.getAmount());
-	    model.addAttribute("proceeding", true);
-		return "page/cart/payment";
-	}
+	@Autowired
+	InventoryServiceImpl inventoryService;
+	
 	
 	@PostMapping("/pay")
 	public String proceedPayment(@RequestParam PaymentMethod paymentMethod,
@@ -60,7 +55,7 @@ public class CheckoutController {
 
 		redirect.addAttribute("paymentMethod", paymentMethod);
 		
-		return "redirect:/checkout/payment";
+		return "redirect:/payment";
 	}
 	
 	/* Cần chuẩn hóa */
@@ -82,6 +77,13 @@ public class CheckoutController {
 			orderDetail.setPrice(item.getPrice());
 			orderDetail.setQuantity(item.getQuantity());
 			odService.create(orderDetail);
+			// Tự động cập nhật só lượng hàng tồn kho sau khi thanh toán thành công
+			try {
+				inventoryService.checkAndUpdateInventory(item.getProductId(), item.getQuantity());
+			}catch(DataAccessException e) {
+				model.addAttribute("success", false);
+				model.addAttribute("erMsg", e.getMessage());
+			}
 		}
 		
 		cartService.clear();

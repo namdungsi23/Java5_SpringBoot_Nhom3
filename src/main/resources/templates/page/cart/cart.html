@@ -8,6 +8,11 @@
 	<div layout:fragment="content">
 		<div class="container my-5">
 			<h2 class="mb-4">Giỏ hàng</h2>
+			
+			<!-- Khi có lỗi xuất hiện -->
+			<div class="alert alert-info text-center" th:if="${errorMessage}">
+				<p th:text="${errorMessage}"></p>
+			</div>
 	    
 		    <!-- Khi giỏ hàng bỏ trống -->
 		    <div th:if="${#lists.isEmpty(cartItems)}" class="alert alert-info">
