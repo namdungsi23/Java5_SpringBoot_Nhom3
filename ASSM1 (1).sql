@@ -27,6 +27,16 @@ CREATE TABLE Accounts (
     Admin BIT
 );
 
+ALTER TABLE ACCOUNTS
+ADD SuperAdmin BIT DEFAULT 0;
+
+INSERT INTO Accounts 
+VALUES ('admin', '123', N'Đặng An Nguyên', 'dangannguyen1211@gmail.com', 'admin.jpg', 1,1,1)
+
+UPDATE Accounts
+SET SuperAdmin = 1
+WHERE Username = 'admin';
+
 CREATE TABLE Orders (
     Id INT IDENTITY PRIMARY KEY,
     Username VARCHAR(30),
@@ -34,6 +44,54 @@ CREATE TABLE Orders (
     Address NVARCHAR(100),
     FOREIGN KEY (Username) REFERENCES Accounts(Username)
 );
+
+ALTER TABLE ORDERS 
+ADD Status Varchar(50) DEFAULT 'New'
+
+ALTER TABLE ORDERS
+ADD total_amount DECIMAL(12,2) DEFAULT 0
+
+UPDATE Orders
+SET 
+    Address = N'Hà Nội - Cầu Giấy',
+    status = 'CONFIRMED',
+    total_amount = 1500000.00
+WHERE Id = 1;
+
+UPDATE Orders
+SET 
+    Address = 'TP HCM',
+    status = 'NEW',
+    total_amount = 400000.00
+WHERE Id = 2;
+
+UPDATE Orders
+SET 
+    Address = N'Đà Nẵng',
+    status = 'CANCEL',
+    total_amount = 5000000.00
+WHERE Id = 3;
+
+UPDATE Orders
+SET 
+    Address = N'Hà Nội',
+    status = 'NEW',
+    total_amount = 400000.00
+WHERE Id = 4;
+
+UPDATE Orders
+SET 
+    Address = 'TP HCM',
+    status = 'NEW',
+    total_amount = 0.00
+WHERE Id = 5;
+
+UPDATE Orders
+SET 
+    Address = N'Đà Nẵng',
+    status = 'NEW',
+    total_amount = 0.00
+WHERE Id = 6;
 
 CREATE TABLE OrderDetails (
     Id INT IDENTITY PRIMARY KEY,
@@ -44,6 +102,7 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (OrderId) REFERENCES Orders(Id),
     FOREIGN KEY (ProductId) REFERENCES Products(Id)
 );
+
 INSERT INTO Categories VALUES
 ('C001', N'Giày chạy bộ'),
 ('C002', N'Giày đá bóng'),
@@ -228,7 +287,7 @@ BEGIN
 	FROM inserted ins
 END;
 
--- Stored Procedure để check số lượng tồn kho và từ động cập nhật hàng tồn kho --
+-- Stored Procedure để check số lượng tồn kho và từ động thêm hàng tồn kho --
 
 CREATE OR ALTER PROCEDURE checkAndAddToInventory
 	@product_id INT,

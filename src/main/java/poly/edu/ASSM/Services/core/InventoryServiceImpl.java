@@ -42,5 +42,7 @@ public class InventoryServiceImpl implements InventoryService{
 	public void checkAndUpdateInventory(int productId, int amount) {
 			jdbcTemplate.update("EXEC sp_CheckAndUpdateInventory @product_id=?, @amount=?", productId, amount);
 	}
+	
+	
 
 }

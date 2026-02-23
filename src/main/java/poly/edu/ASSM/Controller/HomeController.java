@@ -55,23 +55,15 @@ public class HomeController {
     public Accounts user(@AuthenticationPrincipal OAuth2User user) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		 if (auth == null || !auth.isAuthenticated()) {
-		        return null;
-		    }
+		if (auth != null && auth.isAuthenticated()) {
+			Object principal = auth.getPrincipal();
 
-		    Object principal = auth.getPrincipal();
-		    
-		    if (principal instanceof String &&
-		            principal.equals("anonymousUser")) {
-		            return null;
-		        }
+			if (principal instanceof OAuth2User oauthUser) {
+			    String email = oauthUser.getAttribute("email");
+			    return accountService.findByUsername(email);
+			}
+	    }
 
-		    
-		    if (principal instanceof OAuth2User oauthUser) {
-		        String email = oauthUser.getAttribute("email");
-		        return accountService.findByUsername(email);
-		    }
-		
         return authService.getUser();
     }
 	
@@ -81,10 +73,11 @@ public class HomeController {
     }
 	
 	@GetMapping
-	public String index(Model model) {
+	public String index(Model model,
+			            @ModelAttribute("user") Accounts user) {
+		model.addAttribute("user", user);
 	    return "page/index";
 	}
-	
 	
 	
 	@GetMapping("/product")

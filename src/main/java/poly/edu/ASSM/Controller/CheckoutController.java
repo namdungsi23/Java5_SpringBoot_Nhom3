@@ -68,6 +68,8 @@ public class CheckoutController {
 		order.setAddress(address);
 		order.setAccount(accountService.findByUsername(username));
 		order.setCreateDate(LocalDate.now());
+		order.setStatus("NEW");
+		order.setTotalAmount(cartService.getAmount());
 		orderService.create(order);
 		
 		for(CartItem item : cartService.getItems()) {

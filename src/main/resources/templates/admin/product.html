@@ -20,18 +20,30 @@
 
 			<div class="row">
 				<div class="col-md-6 mb-3">
-					<label>Tên sản phẩm</label> <input class="form-control"
-						th:field="*{name}">
+					<label>Tên sản phẩm</label> 
+					<input class="form-control"
+						   th:field="*{name}"
+						   required>
 				</div>
 
 				<div class="col-md-3 mb-3">
-					<label>Giá</label> <input type="number" class="form-control"
-						th:field="*{price}">
+					<label>Giá</label> 
+					<input type="number" class="form-control"
+						   th:field="*{price}"
+						   required>
+				</div>
+				
+				<div class="col-md-3 mb-3">
+					<label>Số lượng</label> 
+					<input type="number" class="form-control"
+						   th:field="*{inventory.quantity}"
+						   required>
 				</div>
 
 				<div class="col-md-3 mb-3">
-					<label>Danh mục</label> <select class="form-select"
-						th:field="*{category.id}">
+					<label>Danh mục</label> 
+					<select class="form-select"
+						     th:field="*{category.id}">
 						<option value="">-- Chọn danh mục --</option>
 						<option th:each="c : ${categories}" th:value="${c.id}"
 							th:text="${c.name}"></option>
@@ -40,8 +52,16 @@
 			</div>
 
 			<div class="mb-3">
-				<label>Hình ảnh</label> <input type="file" class="form-control"
-					name="uploadImage">
+	    		<label>Hình ảnh</label>
+	
+			    <!-- ảnh hiện tại -->
+			    <div th:if="${product.image != null}">
+			        <img th:src="${product.image}"
+			             style="max-width:150px; margin-bottom:10px;">
+			    </div>
+			
+			    <!-- chọn ảnh mới (optional) -->
+			    <input type="file" class="form-control" name="uploadImage">
 			</div>
 
 			<div class="mb-3">
@@ -51,8 +71,8 @@
 
 			<div class="form-check mb-3">
 				<input class="form-check-input" type="checkbox"
-					th:field="*{available}"> <label class="form-check-label">Còn
-					hàng</label>
+					th:field="*{available}"> 
+					<label class="form-check-label"> Còn hàng</label>
 			</div>
 
 			<button class="btn btn-primary">Lưu sản phẩm</button>
@@ -86,6 +106,7 @@
 					<th>ID</th>
 					<th>Tên</th>
 					<th>Giá</th>
+					<th>Hàng tồn kho</th>
 					<th>Danh mục</th>
 					<th>Ngày tạo</th>
 					<th>Trạng thái</th>
@@ -98,10 +119,24 @@
 					<td th:text="${p.id}"></td>
 					<td th:text="${p.name}"></td>
 					<td th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0, 'POINT')}"></td>
+					<td th:text="${p.inventory.quantity != null ? p.inventory.quantity : 0}"></td>
 					<td th:text="${p.category.name}"></td>
 					<td th:text="${p.createDate}"></td>
-					<td><span th:if="${p.available}" class="badge bg-success">Còn</span>
-						<span th:unless="${p.available}" class="badge bg-danger">Hết</span>
+					<td th:switch="true">
+					    <span th:case="${!p.available}"
+					          class="badge bg-secondary">
+					        Ngừng kinh doanh
+					    </span>
+					
+					    <span th:case="${p.inventory == null or p.inventory.quantity == 0}"
+					          class="badge bg-danger">
+					        Hết hàng
+					    </span>
+					
+					    <span th:case="*"
+					          class="badge bg-success">
+					        Còn
+				  	  	</span>
 					</td>
 					<td>
 					<a th:href="@{/admin/product(editId=${p.id})}"

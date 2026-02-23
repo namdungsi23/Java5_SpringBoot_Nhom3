@@ -144,13 +144,13 @@
 
                                     <!-- DELETE: chỉ super admin & không xoá super admin -->
                                     <a th:if="${session.user.superAdmin == true 
-          and u.superAdmin == false
-          and session.user.username != u.username}"
-   th:href="@{/admin/user/delete/{u}(u=${u.username})}"
-   class="btn btn-sm btn-danger"
-   onclick="return confirm('Bạn chắc chắn muốn xóa user này?')">
-    🗑️
-</a>
+									          and u.superAdmin == false
+									          and session.user.username != u.username}"
+									   th:href="@{/admin/user/delete/{u}(u=${u.username})}"
+									   class="btn btn-sm btn-danger"
+									   onclick="return confirm('Bạn chắc chắn muốn xóa user này?')">
+									    🗑️
+									</a>
 
                                 </td>
                             </tr>

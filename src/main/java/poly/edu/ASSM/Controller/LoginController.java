@@ -28,6 +28,7 @@ public class LoginController {
 		
 		authService.login(username, pwd);
 		
+		
 		if(!authService.isLogin()) {
 			redirect.addFlashAttribute("error", "Username hoặc password không hợp lệ, vui lòng thử lại!"); 
 			return "redirect:/";

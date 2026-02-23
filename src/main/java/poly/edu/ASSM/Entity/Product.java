@@ -51,5 +51,12 @@ public class Product {
 	    
 	    @OneToOne(mappedBy="product", fetch=FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true)
 	    private Inventory inventory;
+	    
+	    @Transient //What is transient?
+	    public boolean isInStock() {
+	        return available &&
+	               inventory != null &&
+	               inventory.getQuantity() > 0;
+	    }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import poly.edu.ASSM.component.AdminInterceptor;
 
-
+@Configuration
 public class WebConfig implements WebMvcConfigurer{
 	
 	@Autowired

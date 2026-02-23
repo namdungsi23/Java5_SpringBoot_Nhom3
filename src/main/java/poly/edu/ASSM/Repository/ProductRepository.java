@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +17,10 @@ import poly.edu.ASSM.Entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 	Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
 	
+	@EntityGraph(attributePaths = {
+	        "inventory",
+	        "category"
+	})
 	@Query("""
 			SELECT p FROM Product p
 			WHERE (:cat IS NULL OR  :cat = '' OR p.category.name = :cat)

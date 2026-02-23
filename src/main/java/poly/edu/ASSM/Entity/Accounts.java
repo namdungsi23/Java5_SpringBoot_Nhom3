@@ -35,17 +35,5 @@ public class Accounts {
     @Column(nullable = false)
     private Boolean superAdmin = false;
 
-    // ===== GETTER / SETTER =====
-    public boolean isActivated() {
-        return Boolean.TRUE.equals(activated);
-    }
-
-    public boolean isAdmin() {
-        return Boolean.TRUE.equals(admin);
-    }
-
-    public boolean isSuperAdmin() {
-        return Boolean.TRUE.equals(superAdmin);
-    }
 }
 

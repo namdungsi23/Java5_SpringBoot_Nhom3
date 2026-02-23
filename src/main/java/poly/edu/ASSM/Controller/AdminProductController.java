@@ -67,7 +67,11 @@ public class AdminProductController {
     @PostMapping("/admin/product/save")
     public String save(@ModelAttribute Product product,
     				   @RequestParam MultipartFile uploadImage) {
-    	product.setImage(cloudService.uploadImage(uploadImage));
+    	
+    	if (!uploadImage.isEmpty()) {
+            product.setImage(cloudService.uploadImage(uploadImage));
+        }
+    	
         prt.create(product);
         return "redirect:/admin/product";
     }

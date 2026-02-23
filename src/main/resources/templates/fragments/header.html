@@ -47,9 +47,9 @@
 
 				<div class="modal-body text-center p-4">
 
-					<img th:if="${user.image != null}" th:src="@{${user.image}}"
+					<img th:if="${user.photo != null}" th:src="@{${user.photo}}"
 						class="rounded-circle mb-3 border" width="70" height="70"> <img
-						th:unless="${user.image != null}" src="/img/avatar-default.png"
+						th:unless="${user.photo != null}" src="/img/avatar-default.png"
 						class="rounded-circle mb-3 border" width="70" height="70">
 
 					<h6 class="fw-bold mb-1" th:text="${user.username}">username</h6>
@@ -125,19 +125,5 @@
 			</div>
 		</div>
 	</div>
-
-
-
-<<<<<<< HEAD
-                    <a th:href="@{/logout/oauth2}"
-                       class="btn btn-danger px-4">
-                        Đăng xuất
-                    </a>
-                </div>
-            </div>
-=======
->>>>>>> 05855a91c81c6679c770a9c3cb6864eb6ccd4eb2
-
-
 
 </header>

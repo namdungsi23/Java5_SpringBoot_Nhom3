@@ -78,7 +78,7 @@ public class AdminUserController {
         if (target == null) return "redirect:/admin/user?error=notfound";
 
         // ❌ Admin thường KHÔNG sửa SuperAdmin
-        if (target.isSuperAdmin() && !currentUser.isSuperAdmin()) {
+        if (target.getSuperAdmin() && !currentUser.getSuperAdmin()) {
             return "redirect:/admin/user?error=permission";
         }
 
@@ -96,7 +96,7 @@ public class AdminUserController {
         if (currentUser == null) return "redirect:/login";
 
         // ❌ Không phải SuperAdmin
-        if (!currentUser.isSuperAdmin()) {
+        if (!currentUser.getSuperAdmin()) {
             return "redirect:/admin/user?error=permission";
         }
 
@@ -109,7 +109,7 @@ public class AdminUserController {
         if (target == null) return "redirect:/admin/user?error=notfound";
 
         // ❌ Không xoá SuperAdmin
-        if (target.isSuperAdmin()) {
+        if (target.getSuperAdmin()) {
             return "redirect:/admin/user?error=superadmin";
         }
 

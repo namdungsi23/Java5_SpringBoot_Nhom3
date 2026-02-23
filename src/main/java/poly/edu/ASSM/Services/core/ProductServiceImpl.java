@@ -1,5 +1,6 @@
 package poly.edu.ASSM.Services.core;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import poly.edu.ASSM.Entity.Inventory;
 import poly.edu.ASSM.Entity.Product;
 import poly.edu.ASSM.Repository.ProductRepository;
 
@@ -30,12 +32,50 @@ public class ProductServiceImpl implements ProductService{
 	    }
 
 	    @Override
-	    public Product create(Product product) {
-	        return repo.save(product);
+	    public Product create(Product formProduct) {
+	    	
+	        Product dbProduct = repo.findById(formProduct.getId())
+	                .orElseThrow(() -> 
+	                    new RuntimeException("Product not found"));
+
+	        dbProduct.setName(formProduct.getName());
+	        dbProduct.setPrice(formProduct.getPrice());
+	        dbProduct.setAvailable(formProduct.getAvailable());
+	        dbProduct.setDescription(formProduct.getDescription());
+	        dbProduct.setCategory(formProduct.getCategory());
+
+	        if (formProduct.getImage() != null) {
+	            dbProduct.setImage(formProduct.getImage());
+	        }
+
+	        Inventory formInv = formProduct.getInventory();
+
+	        if (formInv != null) {
+
+	            Inventory dbInv = dbProduct.getInventory();
+
+	            if (dbInv == null) {
+	                // chưa có inventory → tạo mới
+	                dbInv = new Inventory();
+	                dbInv.setProduct(dbProduct);
+	                dbProduct.setInventory(dbInv);
+	            }
+
+	            dbInv.setQuantity(formInv.getQuantity());
+	            dbInv.setLastUpdated(LocalDateTime.now());
+	        }
+
+	        return repo.save(dbProduct);
 	    }
 
 	    @Override
 	    public Product update(Product product) {
+	    	Inventory inv = product.getInventory();
+
+	    	if (inv != null) {
+	    	    inv.setProduct(product); // set owning side
+	    	}
+	    	
 	        return repo.save(product);
 	    }
 

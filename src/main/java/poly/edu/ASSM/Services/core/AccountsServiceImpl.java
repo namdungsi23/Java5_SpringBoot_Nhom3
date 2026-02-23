@@ -43,7 +43,7 @@ public class AccountsServiceImpl implements AccountService {
         exist.setFullname(acc.getFullname());
         exist.setEmail(acc.getEmail());
         exist.setPhoto(acc.getPhoto());
-        exist.setActivated(acc.isActivated());
+        exist.setActivated(acc.getActivated());
 
         // ❌ TUYỆT ĐỐI KHÔNG ĐỘNG
         // admin
@@ -66,7 +66,7 @@ public class AccountsServiceImpl implements AccountService {
         if (acc == null) return null;
 
       
-        if (!acc.isActivated()) return null;
+        if (!acc.getActivated()) return null;
 
   
         if (!acc.getPassword().equals(password)) return null;
