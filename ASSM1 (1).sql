@@ -287,6 +287,8 @@ BEGIN
 	FROM inserted ins
 END;
 
+DROP TRIGGER trg_CreateInventory;
+
 -- Stored Procedure để check số lượng tồn kho và từ động thêm hàng tồn kho --
 
 CREATE OR ALTER PROCEDURE checkAndAddToInventory

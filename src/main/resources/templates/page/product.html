@@ -32,9 +32,14 @@
 				<form th:action="@{/product}" method="get">
 					<input type="hidden" name="cat" th:value="${cat}" /> <input
 						type="text" name="keyword" placeholder="Tìm sản phẩm"
-						th:value="${keyword}" /> <input type="number" name="min"
-						placeholder="Giá từ" th:value="${min}" /> <input type="number"
-						name="max" placeholder="Giá đến" th:value="${max}" />
+						th:value="${keyword}" /> 
+					<input type="number" name="min"
+						   placeholder="Giá từ" 
+						   th:value="${min}" /> 
+				    <input type="number"
+						   name="max" 
+						   placeholder="Giá đến" 
+						   th:value="${max}" />
 
 					<button>Lọc</button>
 				</form>

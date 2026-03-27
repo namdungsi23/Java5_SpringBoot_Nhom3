@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import poly.edu.ASSM.Entity.Category;
 import poly.edu.ASSM.Services.core.CategoryService;
@@ -64,8 +65,15 @@ public class AdminCategoryController {
 
 	    // ================== CREATE ==================
 	    @PostMapping("/create")
-	    public String create(@ModelAttribute("category") Category category) {
-	        categoryService.create(category);
+	    public String create(@ModelAttribute("category") Category category,
+	    					 RedirectAttributes reAttr) {
+	    	try {
+	    		categoryService.create(category);
+	    		reAttr.addFlashAttribute("saveSuccessMsg", "Lưu thành công!");
+	    	}catch(Exception e) {
+	    		reAttr.addFlashAttribute("saveErrorMsg", "Lưu thất bại!");
+	    	}
+	    	
 	        return "redirect:/admin/category";
 	    }
 
@@ -101,8 +109,40 @@ public class AdminCategoryController {
 
 	    // ================== DELETE ==================
 	    @GetMapping("/delete/{id}")
-	    public String delete(@PathVariable("id") String id) {
-	        categoryService.delete(id);
+	    public String delete(@PathVariable("id") String id,
+	    					 RedirectAttributes reAttr) {
+	        try {
+	        	categoryService.delete(id);
+	        	reAttr.addFlashAttribute("deleteSuccessMsg", "Đã xóa thành công!");
+	        }catch(Exception e) {
+	        	reAttr.addFlashAttribute("deleteErrorMsg", "Đã xóa thành công!");
+	        }
+	        
 	        return "redirect:/admin/category";
+	    }
+	    
+	    // ============== HADNLE MESSAGE ============
+	    private void handleMessage(Model model) {
+
+	        Object saveSuccess = model.getAttribute("saveSuccessMsg");
+	        Object saveError   = model.getAttribute("saveErrorMsg");
+	        Object deleteSuccess = model.getAttribute("deleteSuccessMsg");
+	        Object deleteError   = model.getAttribute("deleteErrorMsg");
+
+	        if (saveSuccess != null) {
+	            model.addAttribute("saveSuccessMsg", saveSuccess);
+	        }
+
+	        if (saveError != null) {
+	            model.addAttribute("saveErrorMsg", saveError);
+	        }
+
+	        if (deleteSuccess != null) {
+	            model.addAttribute("deleteSuccessMsg", deleteSuccess);
+	        }
+
+	        if (deleteError != null) {
+	            model.addAttribute("deleteErrorMsg", deleteError);
+	        }
 	    }
 }

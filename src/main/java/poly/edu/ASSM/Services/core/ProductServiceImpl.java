@@ -10,15 +10,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import poly.edu.ASSM.Entity.Inventory;
 import poly.edu.ASSM.Entity.Product;
+import poly.edu.ASSM.Repository.InventoryRepository;
 import poly.edu.ASSM.Repository.ProductRepository;
+import poly.edu.ASSM.exception.InvalidInputException;
 
 @Service
 public class ProductServiceImpl implements ProductService{
 
 	  @Autowired
 	   ProductRepository repo;
+	  
+	  @Autowired
+	   InventoryRepository inventoryRepo;
 	  
 	    // ===== CRUD cơ bản =====
 	    @Override
@@ -30,40 +36,47 @@ public class ProductServiceImpl implements ProductService{
 	    public Product findById(Integer id) {
 	        return repo.findById(id).orElse(null);
 	    }
-
+	    
+	    @Transactional
 	    @Override
-	    public Product create(Product formProduct) {
+	    public Product create(Product formProduct, int quantity) {
 	    	
-	        Product dbProduct = repo.findById(formProduct.getId())
-	                .orElseThrow(() -> 
-	                    new RuntimeException("Product not found"));
+	    	Product dbProduct;
+
+	        // ===== CREATE or UPDATE =====
+	        if (formProduct.getId() != null) {
+	            dbProduct = repo.findById(formProduct.getId())
+	                    .orElseThrow();
+	        } else {
+	            dbProduct = new Product();
+	        }
 
 	        dbProduct.setName(formProduct.getName());
 	        dbProduct.setPrice(formProduct.getPrice());
+	        dbProduct.setCategory(formProduct.getCategory());
 	        dbProduct.setAvailable(formProduct.getAvailable());
 	        dbProduct.setDescription(formProduct.getDescription());
-	        dbProduct.setCategory(formProduct.getCategory());
+	        
+	        /*
+		        Inventory dbInv =
+		            inventoryRepo.findByProduct(dbProduct).orElse(null);
+	        */
+	        
+         	Inventory dbInv = dbProduct.getInventory();
 
-	        if (formProduct.getImage() != null) {
-	            dbProduct.setImage(formProduct.getImage());
+	        if (dbInv == null) {
+	            dbInv = new Inventory();
+	            dbInv.setProduct(dbProduct);
 	        }
+	        
+	        if(quantity <= 0) {
+            	throw new InvalidInputException("Số lượng phải lớn hơn 0!");
+            }
 
-	        Inventory formInv = formProduct.getInventory();
+	        dbInv.setQuantity(quantity);
+	        dbInv.setLastUpdated(LocalDateTime.now());
 
-	        if (formInv != null) {
-
-	            Inventory dbInv = dbProduct.getInventory();
-
-	            if (dbInv == null) {
-	                // chưa có inventory → tạo mới
-	                dbInv = new Inventory();
-	                dbInv.setProduct(dbProduct);
-	                dbProduct.setInventory(dbInv);
-	            }
-
-	            dbInv.setQuantity(formInv.getQuantity());
-	            dbInv.setLastUpdated(LocalDateTime.now());
-	        }
+	        dbProduct.setInventory(dbInv);
 
 	        return repo.save(dbProduct);
 	    }
@@ -105,6 +118,12 @@ public class ProductServiceImpl implements ProductService{
 		@Override
 		public Page<Product> filterProducts(String cat, String keyword, Double min, Double max, Pageable pageable) {
 			return repo.filterProducts(cat, keyword, min, max, pageable);
+		}
+
+		@Override
+		public Product create(Product product) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 

@@ -12,7 +12,36 @@
 
 		<!-- ================= FORM ADD / EDIT ================= -->
 		<h4>➕ Thêm / ✏️ Sửa sản phẩm</h4>
-
+		
+		<!-- CREATE SUCCESS -->
+		<span id="saveSuccessMsg"
+		      th:if="${saveSuccessMsg}"
+		      th:text="${saveSuccessMsg}"
+		      class="alert alert-success d-block mb-3">
+		</span>
+		
+		<!-- CREATE FAIL -->
+		<span id="saveErrorMsg"
+		      th:if="${saveErrorMsg}"
+		      th:text="${saveErrorMsg}"
+		      class="alert alert-danger d-block mb-3">
+		</span>
+		
+		
+		<!-- DELETE SUCCESS -->
+		<span id="deleteSuccessMsg"
+		      th:if="${deleteSuccessMsg}"
+		      th:text="${deleteSuccessMsg}"
+		      class="alert alert-success d-block mb-3">
+		</span>
+		
+		<!-- DELETE FAIL -->
+		<span id="deleteErrorMsg"
+		      th:if="${deleteErrorMsg}"
+		      th:text="${deleteErrorMsg}"
+		      class="alert alert-danger d-block mb-3">
+		</span>
+		
 		<form th:action="@{/admin/product/save}" method="post" enctype="multipart/form-data"
 			th:object="${product}" class="border p-3 mb-4">
 
@@ -34,8 +63,13 @@
 				</div>
 				
 				<div class="col-md-3 mb-3">
-					<label>Số lượng</label> 
-					<input type="number" class="form-control"
+					<label>Số lượng</label>
+					<span  th:if="erMsg"
+						   th:text="${erMsg}"
+						   class="text-danger">
+				    </span>
+					<input type="number" 
+					       class="form-control"
 						   th:field="*{inventory.quantity}"
 						   required>
 				</div>
@@ -75,7 +109,7 @@
 					<label class="form-check-label"> Còn hàng</label>
 			</div>
 
-			<button class="btn btn-primary">Lưu sản phẩm</button>
+			<button id="saveBtn" class="btn btn-primary">Lưu sản phẩm</button>
 			<a th:href="@{/admin/product}" class="btn btn-secondary">Reset</a>
 		</form>
 
@@ -100,7 +134,7 @@
 		</form>
 
 		<!-- ================= TABLE ================= -->
-		<table class="table table-bordered text-center align-middle">
+		<table id="productTable" class="table table-bordered text-center align-middle">
 			<thead class="table-dark">
 				<tr>
 					<th>ID</th>
@@ -114,9 +148,9 @@
 				</tr>
 			</thead>
 
-			<tbody>
+			<tbody id="productTableBody">
 				<tr th:each="p : ${products}">
-					<td th:text="${p.id}"></td>
+					<td id="productIdText" th:text="${p.id}"></td>
 					<td th:text="${p.name}"></td>
 					<td th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0, 'POINT')}"></td>
 					<td th:text="${p.inventory.quantity != null ? p.inventory.quantity : 0}"></td>
@@ -139,10 +173,16 @@
 				  	  	</span>
 					</td>
 					<td>
-					<a th:href="@{/admin/product(editId=${p.id})}"
-						class="btn btn-warning btn-sm">Sửa</a> 
-						<a th:href="@{/admin/product/delete/{id}(id=${p.id})}"
-						class="btn btn-danger btn-sm" onclick="return confirm('Xóa sản phẩm?')">Xóa</a>
+					<a  th:id="|editBtn_${p.id}|"
+					    th:href="@{/admin/product(editId=${p.id})}"
+						class="btn btn-warning btn-sm">
+						Sửa
+					</a> 
+					<a th:id="|deleteBtn_${p.id}|"
+					   th:href="@{/admin/product/delete/{id}(id=${p.id})}"
+					   class="btn btn-danger btn-sm" onclick="return confirm('Xóa sản phẩm?')">
+					   Xóa
+					 </a>
 					</td>
 				</tr>
 			</tbody>

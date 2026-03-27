@@ -28,4 +28,6 @@ public interface ProductService {
     );
     
     Page<Product> filterProducts(String cat, String keyword, Double min, Double max, Pageable pageable);
+
+	Product create(Product formProduct, int quantity);
 }

@@ -10,34 +10,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
 
 import poly.edu.ASSM.Entity.Accounts;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService{
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public @Nullable String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1674080619095529853L;
 	
 	@Autowired
 	AccountsServiceImpl accService; 
 
 	@Override
-	public UserDetails LoadUserByUsername(String username) {
+	public UserDetails loadUserByUsername(String username) {
 		Accounts account = accService.findByUsername(username);
 		
 		List<GrantedAuthority> authorities = new ArrayList<>();

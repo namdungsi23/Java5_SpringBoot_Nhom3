@@ -7,9 +7,10 @@
 	<div th:fragment="loginForm">
 
             <form id="form-login" th:action="@{/login/validate}" method="post">
-            	<div class="fw-semibold bg-danger text-white p-2 rounded" 
+            	<div name="login-error"
+            	     class="fw-semibold bg-danger text-white p-2 rounded" 
             		 th:if="${error}"
-            		  th:text="${error}"></div>
+            		 th:text="${error}"></div>
                 
                 <div class="form-floating mb-3">
                	 	<input type="text" name="username" 
@@ -28,7 +29,7 @@
 	                <label for="chk" class="mt-3">Remember me</label>
                 </div>
 
-			<button class="btn btn-primary w-100 py-2 fw-semibold">Đăng nhập</button>
+			<button id="btnSubmitLogin" class="btn btn-primary w-100 py-2 fw-semibold">Đăng nhập</button>
 			
 			<div class="text-center my-3 text-muted">
 			    — hoặc —

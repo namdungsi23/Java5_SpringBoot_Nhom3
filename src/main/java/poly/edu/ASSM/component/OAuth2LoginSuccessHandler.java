@@ -23,13 +23,15 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 	
 	@Override 
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+		Authentication authentication) throws IOException, ServletException {
 		OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
 		
+		//OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
 		OAuth2User oauth2User = token.getPrincipal();
 		
 		// Lấy info từ Google
         String email = oauth2User.getAttribute("email");
+        //String email = oidcUser.getEmail();
         String name = oauth2User.getAttribute("name");
         String picture = oauth2User.getAttribute("picture");
         
