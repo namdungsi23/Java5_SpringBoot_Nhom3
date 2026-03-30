@@ -56,7 +56,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         System.out.println(((Accounts)session.getAttribute("USER_SESSION")).getEmail());
 
         //Redirect
-        response.sendRedirect("/");
+        response.sendRedirect("/product");
     }
 		
 }

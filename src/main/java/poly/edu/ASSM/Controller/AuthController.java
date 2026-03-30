@@ -1,12 +1,17 @@
 package poly.edu.ASSM.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import poly.edu.ASSM.Entity.Accounts;
 import poly.edu.ASSM.Services.core.AccountService;
@@ -16,8 +21,12 @@ import poly.edu.ASSM.Services.util.AuthService;
 public class AuthController {
 	@Autowired
 	AuthService auth;
+	
 	@Autowired
-	AccountService Account;
+	AccountService account;
+	
+	@Autowired
+    PasswordEncoder passwordEncoder;
 
 /*
 	@PostMapping("/login")
@@ -35,10 +44,10 @@ public class AuthController {
 	}
 */
 	/* ==Xử lý Register== */
-	@PostMapping("/register")
-	public String register(@RequestParam String username, @RequestParam String email, @RequestParam String password,
+	@PostMapping("/register0")
+	public String register0(@RequestParam String username, @RequestParam String email, @RequestParam String password,
 			@RequestParam String confirm, Model model) {
-		if (Account.findByUsername(username) != null) {
+		if (account.findByUsername(username) != null) {
 		    model.addAttribute("error", "Tên đăng nhập đã tồn tại!");
 		    model.addAttribute("showRegister", true);
 		    return "page/login";
@@ -49,6 +58,7 @@ public class AuthController {
 			model.addAttribute("showRegister", true);
 			return "page/login";
 		}
+		
 		// Tạo tài khoản
 		Accounts acc = new Accounts();
 		acc.setUsername(username);
@@ -56,12 +66,38 @@ public class AuthController {
 		acc.setEmail(email);
 		acc.setActivated(true);
 		acc.setAdmin(true);
-		Account.update(acc);
+		account.update(acc);
 		model.addAttribute("sucess", "Đăng nhập thành công!Hãy đăng nhập");
 		model.addAttribute("showRegister", false);
 		return "page/login";
 		// Logout
 
 	}
-
+	
+	@PostMapping("/register")
+	public String register(
+			@RequestParam String username,
+	        @RequestParam String fullname,
+	        @RequestParam String email,
+	        @RequestParam String password,
+	        @RequestParam(required = false) MultipartFile photo,
+	        RedirectAttributes redirect,
+	        Model model){
+		
+		if (account.findByUsername(username) != null) {
+		    redirect.addFlashAttribute("error", "Tên đăng nhập đã tồn tại!");
+		    //redirect.addFlashAttribute("showRegister", true); To be continue
+		    return "redirect:/login"; //To be continue
+		}
+		// Tạo tài khoản
+			Accounts acc = new Accounts();
+			acc.setUsername(username);
+			acc.setPassword(passwordEncoder.encode(password));
+			acc.setEmail(email);
+			acc.setActivated(true);
+			acc.setAdmin(false);
+			account.update(acc);
+		return "page/login"; // To be continue
+		
+	}
 }

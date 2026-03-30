@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import poly.edu.ASSM.Entity.Accounts;
@@ -30,17 +31,16 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) {
 		Accounts account = accService.findByUsername(username);
 		
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		
-
-		if(account != null) {
-			if(account.getAdmin()) {
-				authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-			}else {
-				authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-			
-			}
+		if (account == null) {
+		    throw new UsernameNotFoundException("User not found");
 		}
+		
+		List<GrantedAuthority> authorities = account
+		        .getUserRoles()
+		        .stream()
+		        .map(ur ->ur.getRole().getName().toUpperCase())
+		        .map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role))
+		        .toList();
 		
 		return new User(account.getUsername(), account.getPassword(), authorities);
 	}

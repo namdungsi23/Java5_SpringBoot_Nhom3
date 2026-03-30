@@ -1,6 +1,8 @@
 package poly.edu.ASSM.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +38,9 @@ public class CartController {
 	public String addToCart(@RequestParam int id,
 							RedirectAttributes redirect,
 							Model model) {
-		Accounts user = (Accounts)session.getAttribute("USER_SESSION");
+		//Accounts user = (Accounts)session.getAttribute("USER_SESSION");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object user = auth.getPrincipal();
 		
 		if(!authService.isLogin() && user == null) {
 			redirect.addFlashAttribute("message", "Vui lòng tiến hành đăng nhập để thực hiện chức năng");

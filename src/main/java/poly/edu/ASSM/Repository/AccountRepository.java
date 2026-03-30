@@ -12,13 +12,23 @@ import poly.edu.ASSM.Entity.Accounts;
 @Repository
 public interface AccountRepository extends JpaRepository<Accounts, String> {
 	 boolean existsByUsername(String username);
-	    @Query("""
-	            SELECT a
-	            FROM Accounts a
-	            WHERE 
-	                a.username LIKE %:keyword%
-	                OR a.fullname LIKE %:keyword%
-	                OR a.email LIKE %:keyword%
-	        """)
-	        Page<Accounts> search(@Param("keyword") String keyword, Pageable pageable);
+	 
+    @Query("""
+            SELECT a
+            FROM Accounts a
+            WHERE 
+                a.username LIKE %:keyword%
+                OR a.fullname LIKE %:keyword%
+                OR a.email LIKE %:keyword%
+        """)
+    Page<Accounts> search(@Param("keyword") String keyword, Pageable pageable);
+    
+    @Query("""
+    		SELECT a 
+    		FROM Accounts a
+    		JOIN FETCH a.userRoles ur
+    		JOIN FETCH ur.role
+    		WHERE username = :username
+    		""")
+    Accounts loadByUsername(@Param("username") String username);
 }

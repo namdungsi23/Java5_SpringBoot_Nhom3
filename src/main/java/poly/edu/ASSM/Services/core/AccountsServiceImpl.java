@@ -28,7 +28,7 @@ public class AccountsServiceImpl implements AccountService {
 
     @Override
     public Accounts findByUsername(String username) {
-        return repo.findById(username).orElse(null);
+        return repo.loadByUsername(username);
     }
 
     @Override
@@ -37,18 +37,24 @@ public class AccountsServiceImpl implements AccountService {
         Accounts exist = repo.findById(acc.getUsername()).orElse(null);
 
       
-        if (exist == null) return null;
+        if (exist == null) {
+        	Accounts newAcc = new Accounts();
+        	newAcc.setUsername(acc.getUsername());
+        	newAcc.setEmail(acc.getEmail());
+        	newAcc.setFullname(acc.getFullname());
+        	newAcc.setPassword(acc.getPassword()); //Needs hashing - to be done
+        	newAcc.setPhoto(acc.getPhoto()); // To be done
+        	newAcc.setActivated(true);
+        	newAcc.setAdmin(false);
+        	newAcc.setUserRoles(null); //To be done
+        	return newAcc;
+        }
 
      
         exist.setFullname(acc.getFullname());
         exist.setEmail(acc.getEmail());
         exist.setPhoto(acc.getPhoto());
         exist.setActivated(acc.getActivated());
-
-        // ❌ TUYỆT ĐỐI KHÔNG ĐỘNG
-        // admin
-        // superAdmin
-        // password
 
         return repo.save(exist); 
     }

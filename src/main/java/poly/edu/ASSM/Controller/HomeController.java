@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -52,20 +53,26 @@ public class HomeController {
 	CategoryServiceImpl catService;
 	
 	@ModelAttribute("user")
-    public Accounts user(@AuthenticationPrincipal OAuth2User user) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (auth != null && auth.isAuthenticated()) {
-			Object principal = auth.getPrincipal();
+	public Accounts user(@AuthenticationPrincipal Object principal) {
 
-			if (principal instanceof OAuth2User oauthUser) {
-			    String email = oauthUser.getAttribute("email");
-			    return accountService.findByUsername(email);
-			}
+	    if (principal == null) {
+	        return null;
 	    }
 
-        return authService.getUser();
-    }
+	    //OAuth2 login
+	    if (principal instanceof OAuth2User oauthUser) {
+	        String email = oauthUser.getAttribute("email");
+	        return accountService.findByUsername(email);
+	    }
+
+	    //Normal login (UserDetails)
+	    if (principal instanceof UserDetails userDetails) {
+	        String username = userDetails.getUsername();
+	        return accountService.findByUsername(username);
+	    }
+
+	    return null;
+	}
 	
 	@ModelAttribute("count")
 	public int cart() {

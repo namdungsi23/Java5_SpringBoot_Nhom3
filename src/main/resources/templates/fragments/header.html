@@ -34,10 +34,11 @@
 
 		<!-- LOGIN ICON -->
 		<!-- USER ICON -->
-		<button type="button" class="btn btn-light rounded-circle"
-			data-bs-toggle="modal"
-			th:data-bs-target="${user == null} ? '#authModal' : '#profileMenu'">
-			👤</button>
+		<button type="button" 
+			    class="btn btn-light rounded-circle"
+			    data-bs-toggle="modal"
+			    th:data-bs-target="${user == null} ? '#authModal' : '#profileMenu'">👤
+		</button>
 
 	</div>
 	
@@ -48,10 +49,11 @@
 
 				<div class="modal-body text-center p-4">
 
-					<img th:if="${user.photo != null}" th:src="@{${user.photo}}"
-						class="rounded-circle mb-3 border" width="70" height="70"> <img
-						th:unless="${user.photo != null}" src="/img/avatar-default.png"
-						class="rounded-circle mb-3 border" width="70" height="70">
+					<img th:if="${user.photo != null}" 
+						 th:src="@{${user.photo}}"
+						 class="rounded-circle mb-3 border" width="70" height="70"> <img
+						 th:unless="${user.photo != null}" src="/img/avatar-default.png"
+						 class="rounded-circle mb-3 border" width="70" height="70">
 
 					<h6 class="fw-bold mb-1" th:text="${user.username}">username</h6>
 
@@ -59,11 +61,13 @@
 
 					<div class="d-grid gap-2">
 						<a th:href="@{/profile}" 
-						   class="btn btn-outline-primary btn-sm">
-							👤 Trang cá nhân </a> 
+						   class="btn btn-outline-primary btn-sm">👤 Trang cá nhân 
+						</a> 
 						<a  id="btnLogout"
 						    th:href="@{/logout}"
-							class="btn btn-danger btn-sm"> 🚪 Đăng xuất </a>
+							class="btn btn-danger btn-sm"> 
+							🚪 Đăng xuất 
+						</a>
 					</div>
 
 				</div>
@@ -85,11 +89,11 @@
 				<div class="modal-body px-4">
 
 					<div id="loginBox">
-						<div th:replace="page/login :: loginForm"></div>
+						<div th:replace="~{page/login :: loginForm}"></div>
 					</div>
 
 					<div id="registerBox" class="d-none">
-						<div th:replace="page/register :: registerForm"></div>
+						<div th:replace="~{page/register :: registerForm}"></div>
 					</div>
 
 				</div>
@@ -103,25 +107,23 @@
 			<div class="modal-content border-0 rounded-4 shadow">
 
 				<div class="modal-header border-0 justify-content-center">
-					<h5 class="modal-title fw-bold text-danger" id="authTitle">
-						Xác nhận đăng xuất</h5>
+					<h5 class="modal-title fw-bold text-danger" id="authTitle">Xác nhận đăng xuất</h5>
 					<button type="button"
 						class="btn-close position-absolute end-0 me-3"
-						data-bs-dismiss="modal"></button>
+						data-bs-dismiss="modal">
+					</button>
 				</div>
 
 				<div class="modal-body px-4 text-center">
 					<p class="mb-4">
-						Bạn có chắc chắn muốn <strong>đăng xuất</strong> khỏi hệ thống
-						không?
+						Bạn có chắc chắn muốn <strong>đăng xuất</strong> khỏi hệ thống không?
 					</p>
 
 					<div class="d-flex justify-content-center gap-3">
 						<button class="btn btn-outline-secondary px-4"
 							data-bs-dismiss="modal">Hủy</button>
 
-						<a th:href="@{/logout}" class="btn btn-danger px-4"> Đăng xuất
-						</a>
+						<a th:href="@{/logout}" class="btn btn-danger px-4"> Đăng xuất</a>
 					</div>
 				</div>
 

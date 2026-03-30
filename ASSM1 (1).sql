@@ -27,16 +27,46 @@ CREATE TABLE Accounts (
     Admin BIT
 );
 
-ALTER TABLE ACCOUNTS
-ADD SuperAdmin BIT DEFAULT 0;
-
 INSERT INTO Accounts 
-VALUES ('admin', '123', N'Đặng An Nguyên', 'dangannguyen1211@gmail.com', 'admin.jpg', 1,1,1)
+VALUES ('admin', '123', N'Đặng An Nguyên', 'dangannguyen1211@gmail.com', 'admin.jpg', 1,1)
 
-UPDATE Accounts
-SET SuperAdmin = 1
-WHERE Username = 'admin';
+-- Roles table
+CREATE TABLE Roles (
+    Id INT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(50) NOT NULL UNIQUE
+);
 
+INSERT INTO Roles (Name)
+VALUES 
+('ROLE_ADMIN'),
+('ROLE_USER');
+
+SELECT * FROM ROLES;
+
+-- User Role table
+CREATE TABLE User_Role (
+    Username VARCHAR(30),
+    RoleId INT,
+    
+    PRIMARY KEY (Username, RoleId),
+    
+    FOREIGN KEY (Username) REFERENCES Accounts(Username),
+    FOREIGN KEY (RoleId) REFERENCES Roles(Id)
+);
+
+INSERT INTO User_Role (Username, RoleId)
+SELECT Username, 1
+FROM Accounts
+WHERE Admin = 1;
+
+INSERT INTO User_Role (Username, RoleId)
+SELECT Username, 2
+FROM Accounts
+WHERE Admin = 0;
+
+SELECT * FROM User_Role;
+
+-- Orders table
 CREATE TABLE Orders (
     Id INT IDENTITY PRIMARY KEY,
     Username VARCHAR(30),

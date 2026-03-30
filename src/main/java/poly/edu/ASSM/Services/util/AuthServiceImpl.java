@@ -1,8 +1,13 @@
 package poly.edu.ASSM.Services.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.SessionScope;
 
 import poly.edu.ASSM.Entity.Accounts;
 import poly.edu.ASSM.Services.core.AccountService;
@@ -10,14 +15,16 @@ import poly.edu.ASSM.Services.web.SessionService;
 
 @Service
 public class AuthServiceImpl  implements AuthService{
-	
-
 	    @Autowired
 	    AccountService accountService;
 
 	    @Autowired
 	    SessionService sessionService;
-
+	    
+	    /*
+	    @Autowired
+	    private AuthenticationManager authenticationManager;
+		*/
 	    static final String USER_SESSION = "user";
 	    
 		@Override
@@ -30,13 +37,34 @@ public class AuthServiceImpl  implements AuthService{
 
 	        if (!user.getPassword().equals(password)) {
 	            return null;
-	        }
+	        } //Using hashed password, to be done later
 
 	        if (!Boolean.TRUE.equals(user.getActivated())) {
 	            return null;
 	        }
+	        
+	        String[] authorities = user
+	        		.getUserRoles()
+	        		.stream()
+	        		.map(ur -> ur.getRole().getName())
+	        		.toArray(String[]::new);
+	        
+	        UserDetails userDetail = User.withUsername(username)
+	        		.password(password)
+	        		.authorities(authorities)
+	        		.build();
+	        
+	        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+	        /*
+	          Authentication authentication = authenticationManager.authenticate(
+	        	    new UsernamePasswordAuthenticationToken(username, password)
+	        	);
+	        */
+	        
+	        SecurityContextHolder.getContext().setAuthentication(authentication);
 
 	        sessionService.setAttribute(USER_SESSION, user);
+	        
 	        return user;
 		}
 

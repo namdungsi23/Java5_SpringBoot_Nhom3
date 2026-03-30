@@ -77,11 +77,6 @@ public class AdminUserController {
         Accounts target = accSer.findByUsername(acc.getUsername());
         if (target == null) return "redirect:/admin/user?error=notfound";
 
-        // ❌ Admin thường KHÔNG sửa SuperAdmin
-        if (target.getSuperAdmin() && !currentUser.getSuperAdmin()) {
-            return "redirect:/admin/user?error=permission";
-        }
-
         accSer.update(acc);
         return "redirect:/admin/user?success=updated";
     }
@@ -95,23 +90,13 @@ public class AdminUserController {
         Accounts currentUser = (Accounts) session.getAttribute("user");
         if (currentUser == null) return "redirect:/login";
 
-        // ❌ Không phải SuperAdmin
-        if (!currentUser.getSuperAdmin()) {
-            return "redirect:/admin/user?error=permission";
-        }
-
-        // ❌ Không xoá chính mình
+        // Không xoá chính mình
         if (currentUser.getUsername().equals(username)) {
             return "redirect:/admin/user?error=selfdelete";
         }
 
         Accounts target = accSer.findByUsername(username);
         if (target == null) return "redirect:/admin/user?error=notfound";
-
-        // ❌ Không xoá SuperAdmin
-        if (target.getSuperAdmin()) {
-            return "redirect:/admin/user?error=superadmin";
-        }
 
         accSer.delete(username);
         return "redirect:/admin/user?success=deleted";

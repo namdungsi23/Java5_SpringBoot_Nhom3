@@ -1,15 +1,21 @@
 package poly.edu.ASSM.Services.Config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import poly.edu.ASSM.component.CustomSuccessHandler;
 import poly.edu.ASSM.component.OAuth2LoginSuccessHandler;
 
 @Configuration
@@ -17,6 +23,9 @@ import poly.edu.ASSM.component.OAuth2LoginSuccessHandler;
 public class SecurityConfig {
 	@Autowired
 	OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+	
+	@Autowired
+	CustomSuccessHandler customSuccessHandler;
 	
 	/*
 	@Bean
@@ -49,6 +58,25 @@ public class SecurityConfig {
 	}
 	*/
 	
+	/*
+	@Bean
+    public PasswordEncoder getPasswordEncoder() {
+    	return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+    */
+	
+	/*
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+	    String idForEncode = "bcrypt";
+
+	    Map<String, PasswordEncoder> encoders = new HashMap<>();
+	    encoders.put("bcrypt", new BCryptPasswordEncoder());
+
+	    return new DelegatingPasswordEncoder(idForEncode, encoders);
+	}
+	*/
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 	    return NoOpPasswordEncoder.getInstance();
@@ -58,6 +86,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
 	        .authorizeHttpRequests(auth -> auth
+		        .requestMatchers("/admin/**").hasRole("ADMIN")
 	            // Public resources
 	            .requestMatchers(
 	            	"/",
@@ -69,14 +98,15 @@ public class SecurityConfig {
 	                "/js/**",
 	                "/images/**"
 	            ).permitAll()
-	            .requestMatchers("/admin/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()
 	        )
 	        // FORM LOGIN
 	        .formLogin(form -> form
+	        	//.disable()
 	            .loginPage("/")               
 	            .loginProcessingUrl("/login/validate")     
-	            .defaultSuccessUrl("/product", true)      
+	            //.defaultSuccessUrl("/product", true)
+	            .successHandler(customSuccessHandler)
 	            .failureUrl("/") 
 	            .usernameParameter("username")
 	            .passwordParameter("pwd")
